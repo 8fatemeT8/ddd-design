@@ -1,0 +1,46 @@
+#Create
+POST http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+
+{
+  "eventType": "Track",
+  "name": "first cro funnel",
+  "startDate": "2023-05-12T12:00:00",
+  "expDate": "2023-05-12T12:00:00",
+  "enable": true,
+  "project": 1,
+  "steps": [
+    {
+      "eventName":"item_success",
+      "seq": 0,
+      "conditions": [
+        {
+          "property": 1,
+          "value": "122223",
+          "operator": "equal"
+        },
+        {
+          "property": 2,
+          "value": "12223,4",
+          "operator": "not_between"
+        },
+        {
+          "property": 3,
+          "value": "1223",
+          "operator": "ends_with"
+        }
+      ]
+    },
+    {
+      "eventName":"login",
+      "seq": 1,
+      "conditions": [
+        {
+          "property": 4,
+          "value": "123",
+          "operator": "greater_than_or_equal"
+        }
+      ]
+    }
+  ]
+}
