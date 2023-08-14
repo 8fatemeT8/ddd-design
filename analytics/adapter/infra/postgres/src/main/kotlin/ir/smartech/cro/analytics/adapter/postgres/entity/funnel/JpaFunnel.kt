@@ -7,7 +7,6 @@ import jakarta.persistence.*
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Entity
 @Table(name = "funnels")
@@ -26,7 +25,7 @@ class JpaFunnel : BaseEntity() {
     @OneToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @JoinColumn(name = "funnel_id")
     @Fetch(FetchMode.SELECT)
-    var jpaSteps: ArrayList<JpaStep?> = arrayListOf()
+    var jpaSteps: List<JpaStep?> = arrayListOf()
 
     @Column
     var startDate: Date? = null

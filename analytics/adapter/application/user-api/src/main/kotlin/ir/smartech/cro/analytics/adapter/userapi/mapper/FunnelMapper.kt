@@ -6,16 +6,18 @@ import ir.smartech.cro.analytics.adapter.userapi.dto.FunnelListDto
 import ir.smartech.cro.analytics.adapter.userapi.dto.FunnelViewDto
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 
-//@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 interface FunnelMapper {
-    //    fun toEntity(dto: FunnelCreateDto): Funnel
     companion object {
         fun toFunnel(dto: FunnelCreateDto): Funnel {
-            return Funnel()
+            return Funnel().apply {
+                name = dto.name
+            }
         }
 
         fun toFunnel(dto: FunnelEditDto): Funnel {
-            return Funnel()
+            return Funnel().apply {
+                name = dto.name
+            }
         }
 
         fun toFunnelViewDto(funnel: Funnel?): FunnelViewDto {

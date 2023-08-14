@@ -9,7 +9,7 @@ class JpaStep : BaseEntity() {
 
     @OneToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @JoinColumn(name = "funnel_step_id")
-    var jpaStepConditions: ArrayList<JpaStepCondition> = arrayListOf()
+    var jpaStepConditions: List<JpaStepCondition> = arrayListOf()
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     var funnel: JpaFunnel? = null

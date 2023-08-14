@@ -14,17 +14,19 @@ class FunnelMapper(
     override fun toSource(dto: Funnel?): JpaFunnel? {
         val that = this
         if (dto == null) return null
-        return JpaFunnel().apply {
+        val response = JpaFunnel().apply {
             name = dto.name
             enable = dto.enable
             isDeleted = dto.isDeleted
-            project = projectMapper.toSource(dto.project!!)
+            project = projectMapper.toSource(dto.project)
             startDate = dto.startDate
             expDate = dto.expDate
             eventType = dto.eventType
             predecessor = that.toSource(dto.predecessor)
             jpaSteps = dto.steps.map { stepMapper.toSource(it) }.toCollection(ArrayList())
         }
+        response.predecessor = that.toSource(dto.predecessor)
+        return response
     }
 
     override fun toDestination(dto: JpaFunnel?): Funnel? {
@@ -34,13 +36,14 @@ class FunnelMapper(
             name = dto.name
             enable = dto.enable
             isDeleted = dto.isDeleted
-            project = projectMapper.toDestination(dto.project!!)
+            project = projectMapper.toDestination(dto.project)
             startDate = dto.startDate
             expDate = dto.expDate
             eventType = dto.eventType
             steps = dto.jpaSteps.map { stepMapper.toDestination(it) }
         }
-        response.computedPredecessor(that.toDestination(dto.predecessor)!!)
+        if (dto.predecessor != null)
+            response.computedPredecessor(that.toDestination(dto.predecessor)!!)
         return response
     }
 }
