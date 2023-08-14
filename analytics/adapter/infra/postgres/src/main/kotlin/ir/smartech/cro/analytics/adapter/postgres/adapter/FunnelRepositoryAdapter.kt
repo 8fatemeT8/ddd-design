@@ -6,6 +6,7 @@ import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Component
@@ -19,11 +20,13 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
         return funnelMapper.toDestination(saved)
     }
 
+    @Transactional
     override fun findById(id: Int): Optional<Funnel> {
         val dbObject = repo.findById(id).get() ?: throw NotFoundException()
         return Optional.of(funnelMapper.toDestination(dbObject)!!)
     }
 
+    @Transactional
     override fun findAll(): Iterable<Funnel?> {
         val data = repo.findAll()
         return data.map { funnelMapper.toDestination(it) }

@@ -6,10 +6,8 @@ import java.util.*
 
 open class Funnel {
     var id: Int? = null
-        private set
 
     var predecessor: Funnel? = null
-        private set
 
     var project: Project? = null
 
@@ -26,6 +24,10 @@ open class Funnel {
     var enable: Boolean? = true
 
     var isDeleted: Boolean? = false
+
+    open var createdDate: Date? = null
+
+    open var modifiedDate: Date? = null
 
     fun computedPredecessor(parent: Funnel) {
         predecessor = parent

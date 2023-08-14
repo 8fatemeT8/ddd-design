@@ -1,7 +1,9 @@
 package ir.smartech.cro.analytics.domain.funnel.api.entity
 
 class Step {
-    var conditions: List<StepCondition> = arrayListOf()
+    var id: Int? = null
+
+    var stepConditions: List<StepCondition> = arrayListOf()
 
     var funnel: Funnel? = null
 

@@ -1,9 +1,12 @@
 package ir.smartech.cro.analytics.adapter.postgres.entity
 
 import jakarta.persistence.*
+import org.hibernate.envers.AuditMappedBy
+import org.hibernate.envers.Audited
 
+@Audited
 @Entity
-@Table
+@Table(name = "projects")
 class JpaProject : BaseEntity() {
     @Column(nullable = false)
     var name: String? = null
@@ -16,6 +19,7 @@ class JpaProject : BaseEntity() {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @AuditMappedBy(mappedBy = "project")
     var jpaProperties: ArrayList<JpaProperty?> = arrayListOf()
 
 }

@@ -2,14 +2,18 @@ package ir.smartech.cro.analytics.adapter.postgres.entity.funnel
 
 import ir.smartech.cro.analytics.adapter.postgres.entity.BaseEntity
 import jakarta.persistence.*
+import org.hibernate.envers.AuditMappedBy
+import org.hibernate.envers.Audited
 
+@Audited
 @Entity
 @Table(name = "funnel_steps")
 class JpaStep : BaseEntity() {
 
-    @OneToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "funnel_step_id")
-    var jpaStepConditions: List<JpaStepCondition> = arrayListOf()
+    @AuditMappedBy(mappedBy = "funnelStep")
+    var stepConditions: List<JpaStepCondition> = arrayListOf()
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     var funnel: JpaFunnel? = null

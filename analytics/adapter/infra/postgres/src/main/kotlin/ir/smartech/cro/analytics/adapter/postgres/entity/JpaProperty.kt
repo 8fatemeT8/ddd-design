@@ -3,9 +3,11 @@ package ir.smartech.cro.analytics.adapter.postgres.entity
 import ir.smartech.cro.analytics.domain.common.api.enums.PropertyType
 import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
 import jakarta.persistence.*
+import org.hibernate.envers.Audited
 
+@Audited
 @Table
-@Entity
+@Entity(name = "properties")
 class JpaProperty : BaseEntity() {
     @ManyToOne(optional = true)
     var project: JpaProject? = null

@@ -6,8 +6,11 @@ import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
 import jakarta.persistence.*
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
+import org.hibernate.envers.AuditMappedBy
+import org.hibernate.envers.Audited
 import java.util.*
 
+@Audited
 @Entity
 @Table(name = "funnels")
 class JpaFunnel : BaseEntity() {
@@ -22,10 +25,11 @@ class JpaFunnel : BaseEntity() {
     @JoinColumn(name = "project_id")
     var project: JpaProject? = null
 
-    @OneToMany(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "funnel_id")
     @Fetch(FetchMode.SELECT)
-    var jpaSteps: List<JpaStep?> = arrayListOf()
+    @AuditMappedBy(mappedBy = "funnel")
+    var steps: List<JpaStep?> = arrayListOf()
 
     @Column
     var startDate: Date? = null

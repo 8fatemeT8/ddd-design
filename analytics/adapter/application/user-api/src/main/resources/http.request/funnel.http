@@ -11,36 +11,119 @@ Content-Type: application/json
   "project": 1,
   "steps": [
     {
-      "eventName":"item_success",
+      "eventName": "item_success",
       "seq": 0,
-      "conditions": [
+      "stepConditions": [
         {
-          "property": 1,
+          "property": {
+            "id": 1
+          },
           "value": "122223",
-          "operator": "equal"
+          "operator": "EQUAL"
         },
         {
-          "property": 2,
+          "property": {
+            "id": 2
+          },
           "value": "12223,4",
-          "operator": "not_between"
+          "operator": "NOT_BETWEEN"
         },
         {
-          "property": 3,
+          "property": {
+            "id": 3
+          },
           "value": "1223",
-          "operator": "ends_with"
+          "operator": "ENDS_WITH"
         }
       ]
     },
     {
-      "eventName":"login",
+      "eventName": "login",
       "seq": 1,
-      "conditions": [
+      "stepConditions": [
         {
-          "property": 4,
+          "property": {
+            "id": 4
+          },
           "value": "123",
-          "operator": "greater_than_or_equal"
+          "operator": "GREATER_THAN_OR_EQUAL"
         }
       ]
     }
   ]
 }
+
+
+###
+
+#Update
+PUT http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+
+
+{
+  "name": "update first cro funnel",
+  "id": 3,
+  "startDate": "2018-05-12T12:00:00.000+00:00",
+  "expDate": "2018-05-12T12:00:00.000+00:00",
+  "enable": true,
+  "eventType": "Identify",
+  "createdDate": "2019-08-14T07:38:36.710+00:00",
+  "steps": [
+    {
+      "id": 1,
+      "eventName": "QE",
+      "seq": 0,
+      "stepConditions": [
+        {
+          "id": 1,
+          "operator": "EQUAL",
+          "value": "122223",
+          "property": null
+        },
+        {
+          "id": 2,
+          "operator": "NOT_BETWEEN",
+          "value": "12223,4",
+          "property": null
+        },
+        {
+          "id": 3,
+          "operator": "ENDS_WITH",
+          "value": "1223",
+          "property": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "eventName": "logout",
+      "seq": 1,
+      "stepConditions": [
+        {
+          "id": 4,
+          "operator": "GREATER_THAN_OR_EQUAL",
+          "value": "123",
+          "property": null
+        }
+      ]
+    }
+  ]
+}
+###
+
+#Get By Id
+GET http://localhost:8082/api/web/analytics/funnel/4
+Content-Type: application/json
+
+###
+
+#Get All
+GET http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+
+###
+
+#Delte By Id
+DELETE http://localhost:8082/api/web/analytics/funnel/5
+Content-Type: application/json

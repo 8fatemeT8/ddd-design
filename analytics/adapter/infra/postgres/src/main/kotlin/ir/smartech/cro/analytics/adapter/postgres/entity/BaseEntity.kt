@@ -4,14 +4,10 @@ import jakarta.persistence.*
 import java.util.*
 
 @MappedSuperclass
-abstract class BaseEntity{
+abstract class BaseEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Int? = null
-
-    @Version
-    @Column(nullable = false)
-    open var crc: Int? = null
 
     @Column
     open var createdDate: Date? = null
@@ -25,4 +21,17 @@ abstract class BaseEntity{
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    open var modifiedBy: User? = null
 
+
+    @PrePersist
+    fun setCreateDate() {
+        createdDate = if (createdDate == null)
+            Date()
+        else
+            createdDate
+    }
+
+    @PreUpdate
+    fun setUpdateDate() {
+        modifiedDate = Date()
+    }
 }
