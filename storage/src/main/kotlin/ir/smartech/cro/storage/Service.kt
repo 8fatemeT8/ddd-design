@@ -6,9 +6,9 @@ import ir.smartech.cro.storage.config.kafka.KafkaTopic
 import org.springframework.stereotype.Service
 
 @Service
-class GatewayService(private val kafkaPublisher: KafkaPublisher<String, Any?>) {
+class Service(private val kafkaPublisher: KafkaPublisher<String, Any?>) {
 
-    fun test(message: KafkaMessage) {
+    fun writeToKafka(message: KafkaMessage) {
         kafkaPublisher.publish(arrayListOf(message), KafkaTopic.gatewayEmit)
     }
 }

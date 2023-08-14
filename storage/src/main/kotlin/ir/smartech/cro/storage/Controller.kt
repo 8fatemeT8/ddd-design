@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/web/cro/gateway")
-class GatewayController(private val gatewayService: GatewayService) {
+class Controller(private val service: Service) {
 
     @PostMapping("/write")
-    fun writeDataToKafka(@RequestBody message: KafkaMessage) {
-        gatewayService.test(message)
+    fun receiveData(@RequestBody message: KafkaMessage) {
+        // TODO : add validation, it must save valid data to kafka
+        service.writeToKafka(message)
     }
 }
