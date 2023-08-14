@@ -1,0 +1,8 @@
+POST http://localhost:8081/api/web/cro/gateway/write
+content-Type: application/json
+
+{
+  "message":"hello every one",
+  "name": "kamand",
+  "id": 1
+}
