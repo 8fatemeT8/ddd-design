@@ -9,13 +9,12 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.support.serializer.JsonSerializer
-import kotlin.collections.HashMap
 
 
 @Configuration
 class KafkaConfig {
 
-    @Value("\${spring.kafka.producer.bootstrap-servers}")
+    @Value("\${spring.kafka.server.address}")
     var serverAddress: String? = null
 
     @Bean
