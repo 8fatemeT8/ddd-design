@@ -10,8 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ir.smartech.cro.analytics.adapter</groupId>
-    <artifactId>postgres</artifactId>
+    <artifactId>rdb</artifactId>
 
     <dependencies>
         <dependency>
