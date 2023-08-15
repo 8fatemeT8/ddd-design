@@ -1,7 +1,7 @@
-package ir.smartech.cro.analytics.adapter.postgres.entity.funnel
+package ir.smartech.cro.analytics.adapter.rdb.entity.funnel
 
-import ir.smartech.cro.analytics.adapter.postgres.entity.BaseEntity
-import ir.smartech.cro.analytics.adapter.postgres.entity.JpaProject
+import ir.smartech.cro.analytics.adapter.rdb.entity.BaseEntity
+import ir.smartech.cro.analytics.adapter.rdb.entity.JpaProject
 import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
 import jakarta.persistence.*
 import org.hibernate.annotations.Fetch

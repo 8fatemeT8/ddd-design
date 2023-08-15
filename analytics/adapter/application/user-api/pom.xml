@@ -10,12 +10,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ir.smartech.cro.analytics.adapter</groupId>
     <artifactId>user-api</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>ir.smartech.cro.analytics.adapter</groupId>
+            <groupId>ir.smartech.cro.analytics</groupId>
             <artifactId>composition-root</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <exclusions>
@@ -26,8 +25,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>ir.smartech.cro.analytics.adapter</groupId>
-            <artifactId>postgres</artifactId>
+            <groupId>ir.smartech.cro.analytics</groupId>
+            <artifactId>rdb</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>

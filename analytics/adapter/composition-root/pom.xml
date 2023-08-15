@@ -9,13 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ir.smartech.cro.analytics.adapter</groupId>
     <artifactId>composition-root</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>ir.smartech.cro.analytics.adapter</groupId>
-            <artifactId>postgres</artifactId>
+            <groupId>ir.smartech.cro.analytics</groupId>
+            <artifactId>rdb</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

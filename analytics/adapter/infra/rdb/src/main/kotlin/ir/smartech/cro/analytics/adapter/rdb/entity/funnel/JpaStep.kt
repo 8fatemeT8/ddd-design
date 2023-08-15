@@ -1,6 +1,6 @@
-package ir.smartech.cro.analytics.adapter.postgres.entity.funnel
+package ir.smartech.cro.analytics.adapter.rdb.entity.funnel
 
-import ir.smartech.cro.analytics.adapter.postgres.entity.BaseEntity
+import ir.smartech.cro.analytics.adapter.rdb.entity.BaseEntity
 import jakarta.persistence.*
 import org.hibernate.envers.AuditMappedBy
 import org.hibernate.envers.Audited

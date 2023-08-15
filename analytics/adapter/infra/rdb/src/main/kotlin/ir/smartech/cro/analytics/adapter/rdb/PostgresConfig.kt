@@ -1,7 +1,7 @@
-package ir.smartech.cro.analytics.adapter.postgres
+package ir.smartech.cro.analytics.adapter.rdb
 
-import ir.smartech.cro.analytics.adapter.postgres.entity.BaseEntity
-import ir.smartech.cro.analytics.adapter.postgres.repository.JpaFunnelRepository
+import ir.smartech.cro.analytics.adapter.rdb.entity.BaseEntity
+import ir.smartech.cro.analytics.adapter.rdb.repository.JpaFunnelRepository
 import org.modelmapper.ModelMapper
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean

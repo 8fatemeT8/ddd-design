@@ -1,7 +1,7 @@
-package ir.smartech.cro.analytics.adapter.postgres.adapter
+package ir.smartech.cro.analytics.adapter.rdb.adapter
 
-import ir.smartech.cro.analytics.adapter.postgres.mapper.funnel.FunnelMapper
-import ir.smartech.cro.analytics.adapter.postgres.repository.JpaFunnelRepository
+import ir.smartech.cro.analytics.adapter.rdb.mapper.funnel.FunnelMapper
+import ir.smartech.cro.analytics.adapter.rdb.repository.JpaFunnelRepository
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException

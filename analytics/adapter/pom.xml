@@ -15,7 +15,7 @@
     <modules>
         <module>composition-root</module>
         <module>application/user-api</module>
-        <module>infra/postgres</module>
+        <module>infra/rdb</module>
     </modules>
 
     <dependencies>

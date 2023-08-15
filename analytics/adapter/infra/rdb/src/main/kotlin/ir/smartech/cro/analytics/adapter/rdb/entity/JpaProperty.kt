@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.postgres.entity
+package ir.smartech.cro.analytics.adapter.rdb.entity
 
 import ir.smartech.cro.analytics.domain.common.api.enums.PropertyType
 import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType

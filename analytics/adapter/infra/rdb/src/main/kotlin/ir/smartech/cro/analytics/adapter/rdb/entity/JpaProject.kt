@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.postgres.entity
+package ir.smartech.cro.analytics.adapter.rdb.entity
 
 import jakarta.persistence.*
 import org.hibernate.envers.AuditMappedBy

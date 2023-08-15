@@ -1,6 +1,6 @@
-package ir.smartech.cro.analytics.adapter.postgres.repository
+package ir.smartech.cro.analytics.adapter.rdb.repository
 
-import ir.smartech.cro.analytics.adapter.postgres.entity.funnel.JpaFunnel
+import ir.smartech.cro.analytics.adapter.rdb.entity.funnel.JpaFunnel
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

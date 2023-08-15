@@ -1,7 +1,7 @@
-package ir.smartech.cro.analytics.adapter.postgres.mapper.funnel
+package ir.smartech.cro.analytics.adapter.rdb.mapper.funnel
 
-import ir.smartech.cro.analytics.adapter.postgres.entity.funnel.JpaFunnel
-import ir.smartech.cro.analytics.adapter.postgres.mapper.Mapper
+import ir.smartech.cro.analytics.adapter.rdb.entity.funnel.JpaFunnel
+import ir.smartech.cro.analytics.adapter.rdb.mapper.Mapper
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Component
