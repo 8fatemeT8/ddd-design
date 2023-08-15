@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>ir.smartech.cro.analytics</groupId>
-            <artifactId>rdb</artifactId>
+            <artifactId>analytics-rdb</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>runtime</scope>
         </dependency>

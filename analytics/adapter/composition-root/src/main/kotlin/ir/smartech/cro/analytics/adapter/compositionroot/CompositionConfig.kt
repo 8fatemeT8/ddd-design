@@ -1,6 +1,6 @@
 package ir.smartech.cro.analytics.adapter.compositionroot
 
-import ir.smartech.cro.analytics.adapter.rdb.PostgresConfig
+import ir.smartech.cro.analytics.rdb.PostgresConfig
 import ir.smartech.cro.analytics.domain.funnel.api.FunnelService
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 import org.springframework.context.annotation.Bean
