@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.userapi.dto.funnel
+package ir.smartech.cro.analytics.api.dto.funnel
 
 data class StepCreateDto(
     var eventName: String? = null,

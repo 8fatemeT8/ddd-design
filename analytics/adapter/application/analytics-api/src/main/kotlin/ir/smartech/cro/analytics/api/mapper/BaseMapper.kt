@@ -1,9 +1,9 @@
-package ir.smartech.cro.analytics.adapter.userapi.mapper
+package ir.smartech.cro.analytics.api.mapper
 
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseCreateDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseEditDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseListDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseViewDto
+import ir.smartech.cro.analytics.api.dto.BaseCreateDto
+import ir.smartech.cro.analytics.api.dto.BaseEditDto
+import ir.smartech.cro.analytics.api.dto.BaseListDto
+import ir.smartech.cro.analytics.api.dto.BaseViewDto
 
 interface BaseMapper<TEntity, TCreate : BaseCreateDto, TEdit : BaseEditDto, TView : BaseViewDto, TList : BaseListDto> {
 

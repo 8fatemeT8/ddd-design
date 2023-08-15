@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>composition-root</module>
-        <module>application/user-api</module>
+        <module>application/analytics-api</module>
         <module>infra/rdb</module>
     </modules>
 

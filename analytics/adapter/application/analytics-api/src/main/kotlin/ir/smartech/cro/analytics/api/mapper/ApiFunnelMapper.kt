@@ -1,9 +1,9 @@
-package ir.smartech.cro.analytics.adapter.userapi.mapper
+package ir.smartech.cro.analytics.api.mapper
 
-import ir.smartech.cro.analytics.adapter.userapi.dto.funnel.FunnelCreateDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.funnel.FunnelEditDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.funnel.FunnelListDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.funnel.FunnelViewDto
+import ir.smartech.cro.analytics.api.dto.funnel.FunnelCreateDto
+import ir.smartech.cro.analytics.api.dto.funnel.FunnelEditDto
+import ir.smartech.cro.analytics.api.dto.funnel.FunnelListDto
+import ir.smartech.cro.analytics.api.dto.funnel.FunnelViewDto
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Component

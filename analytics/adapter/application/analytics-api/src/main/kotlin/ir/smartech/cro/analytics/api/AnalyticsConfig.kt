@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.userapi
+package ir.smartech.cro.analytics.api
 
 import org.springframework.context.annotation.Configuration
 

@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.userapi
+package ir.smartech.cro.analytics.api
 
 import ir.smartech.cro.analytics.adapter.compositionroot.CompositionConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication

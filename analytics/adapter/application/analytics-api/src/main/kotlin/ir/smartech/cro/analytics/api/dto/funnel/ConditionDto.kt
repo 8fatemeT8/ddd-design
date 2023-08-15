@@ -1,6 +1,6 @@
-package ir.smartech.cro.analytics.adapter.userapi.dto.funnel
+package ir.smartech.cro.analytics.api.dto.funnel
 
-import ir.smartech.cro.analytics.adapter.userapi.dto.IdDto
+import ir.smartech.cro.analytics.api.dto.IdDto
 import ir.smartech.cro.analytics.domain.common.api.enums.Operator
 
 data class ConditionCreateDto(var operator: Operator? = null, var value: String? = null, var property: IdDto? = null)

@@ -1,4 +1,4 @@
-package ir.smartech.cro.analytics.adapter.userapi.dto
+package ir.smartech.cro.analytics.api.dto
 
 open class BaseCreateDto
 open class BaseEditDto

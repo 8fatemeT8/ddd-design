@@ -1,9 +1,9 @@
-package ir.smartech.cro.analytics.adapter.userapi.dto.funnel
+package ir.smartech.cro.analytics.api.dto.funnel
 
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseCreateDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseEditDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseListDto
-import ir.smartech.cro.analytics.adapter.userapi.dto.BaseViewDto
+import ir.smartech.cro.analytics.api.dto.BaseCreateDto
+import ir.smartech.cro.analytics.api.dto.BaseEditDto
+import ir.smartech.cro.analytics.api.dto.BaseListDto
+import ir.smartech.cro.analytics.api.dto.BaseViewDto
 import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
 import java.util.*
 
