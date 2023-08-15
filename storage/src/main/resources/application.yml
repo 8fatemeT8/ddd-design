@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: CRO Storage
+
+server:
+  port: 8081
