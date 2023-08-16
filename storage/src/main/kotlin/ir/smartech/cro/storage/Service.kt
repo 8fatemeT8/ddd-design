@@ -1,8 +1,8 @@
 package ir.smartech.cro.storage
 
-import ir.smartech.cro.storage.config.kafka.KafkaMessage
 import ir.smartech.cro.storage.config.kafka.KafkaPublisher
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
+import ir.smartech.cro.storage.data.kafka.dto.KafkaMessage
 import org.springframework.stereotype.Service
 
 @Service

@@ -4,5 +4,10 @@ content-Type: application/json
 {
   "message":"hello everyone",
   "name": "Kamand Torkzaban",
-  "id": 1
+  "age": 25
 }
+
+###
+POST http://localhost:8081/api/web/cro/gateway/table
+###
+GET http://localhost:8081/api/web/cro/gateway
