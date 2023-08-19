@@ -1,6 +1,29 @@
 spring:
   application:
     name: CRO Storage
+  datasource:
+    driver-class-name: cc.blynk.clickhouse.ClickHouseDriver
+    url: jdbc:clickhouse://localhost:8123/CRO
+  kafka:
+    server:
+      address: 127.0.0.1:9092
+    consumer:
+      gateway-data:
+        activation-status: true
+        group-id: gateway_data_group
+        concurrency: 1
+    listener:
+      ack-mode: manual
 
 server:
   port: 8081
+
+#parquet
+schema:
+  filePath: schema/cro.schema
+
+output:
+  directoryPath: output
+
+#spring.kafka.consumer.enable-auto-commit=true
+

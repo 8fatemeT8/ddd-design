@@ -11,3 +11,5 @@ content-Type: application/json
 POST http://localhost:8081/api/web/cro/gateway/table
 ###
 GET http://localhost:8081/api/web/cro/gateway
+###
+POST http://localhost:8081/api/web/cro/gateway/parquet

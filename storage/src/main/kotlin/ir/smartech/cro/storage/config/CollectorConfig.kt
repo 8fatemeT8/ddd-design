@@ -9,7 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka
 
 @Configuration
 @EnableKafka
-class GatewayConfig {
+class CollectorConfig {
 
     @Value("\${spring.datasource.url}")
     val dataSourceUrl: String? = null
