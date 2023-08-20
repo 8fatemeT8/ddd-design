@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <kotlin.version>1.8.22</kotlin.version>
+        <tomcat.version>9.0.1</tomcat.version>
     </properties>
 
     <dependencies>
