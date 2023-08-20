@@ -1,5 +1,6 @@
 package ir.smartech.cro.storage.controller
 
+import ir.smartech.cro.storage.data.postgres.ReturnType
 import ir.smartech.cro.storage.data.postgres.dto.ProductSchemaDto
 import ir.smartech.cro.storage.data.postgres.entity.Product
 import ir.smartech.cro.storage.service.ProductService
@@ -38,4 +39,7 @@ class ProductController(private val productService: ProductService) {
         productService.setSchema(dto)
         return ResponseEntity.ok().build()
     }
+
+    @GetMapping("/return-type")
+    fun getReturnTypes(): ResponseEntity<List<String>> = ResponseEntity.ok(ReturnType.values().map { it.toString() })
 }

@@ -20,7 +20,10 @@ content-Type: application/json
   "id": 1,
   "businessId": 2,
   "data": {
-    "appVersion": "string",
-    "deviceType": "int"
+    "appVersion": "STRING",
+    "deviceType": "NUMBER"
   }
 }
+
+###
+GET http://localhost:8081/api/web/cro/product/return-type
