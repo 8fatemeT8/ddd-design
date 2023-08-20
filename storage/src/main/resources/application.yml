@@ -3,7 +3,7 @@ spring:
     name: CRO Storage
   datasource:
     driver-class-name: cc.blynk.clickhouse.ClickHouseDriver
-    url: jdbc:clickhouse://localhost:8123/CRO
+    clickhouse-url: jdbc:clickhouse://localhost:8123/CRO
   kafka:
     server:
       address: 127.0.0.1:9092
@@ -14,6 +14,17 @@ spring:
         concurrency: 1
     listener:
       ack-mode: manual
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        connection:
+          url: jdbc:postgresql://localhost:5432/storage
+          password: 1111
+          username: postgres
+          driver_class: org.postgresql.Driver
 
 server:
   port: 8081

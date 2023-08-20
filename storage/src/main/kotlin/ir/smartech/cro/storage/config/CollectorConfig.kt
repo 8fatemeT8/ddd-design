@@ -11,7 +11,7 @@ import org.springframework.kafka.annotation.EnableKafka
 @EnableKafka
 class CollectorConfig {
 
-    @Value("\${spring.datasource.url}")
+    @Value("\${spring.datasource.clickhouse-url}")
     val dataSourceUrl: String? = null
 
     @Bean
