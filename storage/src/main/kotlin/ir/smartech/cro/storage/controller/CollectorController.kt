@@ -2,8 +2,8 @@ package ir.smartech.cro.storage.controller
 
 import ir.smartech.cro.storage.service.CollectorService
 import ir.smartech.cro.storage.data.clickhouse.ClickhouseService
-import ir.smartech.cro.storage.data.kafka.dto.KafkaMessage
 import ir.smartech.cro.storage.data.parquet.ParquetService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,9 +20,12 @@ class CollectorController(
 ) {
 
     @PostMapping("/receive")
-    fun receiveData(@RequestBody message: KafkaMessage) {
-        // TODO : add validation, it must save valid data to kafka
+    fun receiveData(@RequestBody message: HashMap<String, String>): ResponseEntity<Any> {
+        val result = collectorService.validate(message)
+        if (result.isNotEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE.value()).body(result)
         collectorService.writeToKafka(message)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/table")

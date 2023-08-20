@@ -32,6 +32,12 @@ class ProductService(
         productSchemaRepository.save(toBeSave)
     }
 
+    fun getSchema(product: Product, businessId: Int): ProductSchema =
+        productSchemaRepository.getReferenceById(ProductSchemaId().apply {
+            this.product = product
+            this.businessId = businessId
+        })
+
     private fun mapToEntity(dto: ProductSchemaDto, product: Product) =
         ProductSchema().apply {
             productSchemaId = ProductSchemaId().apply {

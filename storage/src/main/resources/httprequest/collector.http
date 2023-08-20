@@ -1,15 +1,18 @@
-POST http://localhost:8081/api/web/cro/collector/write
+POST http://localhost:8081/api/web/cro/collector/receive
 content-Type: application/json
 
 {
-  "message":"hello everyone",
-  "name": "Kamand Torkzaban",
-  "age": 25
+  "id": 1,
+  "businessId": 2,
+  "appVersion": "{\"hi\":\"aaa\"}",
+  "deviceType": "11"
 }
 
 ###
 POST http://localhost:8081/api/web/cro/collector/table
+
 ###
 GET http://localhost:8081/api/web/cro/collector
+
 ###
 POST http://localhost:8081/api/web/cro/collector/parquet

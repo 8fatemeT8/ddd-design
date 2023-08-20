@@ -1,6 +1,7 @@
 package ir.smartech.cro.storage.data.postgres.entity
 
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType
+import ir.smartech.cro.storage.data.postgres.ReturnType
 import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
@@ -16,5 +17,5 @@ class ProductSchema {
 
     @Column(columnDefinition = "jsonb")
     @Type(JsonBinaryType::class)
-    var data: HashMap<String, String>? = hashMapOf()
+    var data: HashMap<String, ReturnType>? = hashMapOf()
 }
