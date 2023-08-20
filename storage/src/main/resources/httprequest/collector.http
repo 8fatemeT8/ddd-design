@@ -1,0 +1,15 @@
+POST http://localhost:8081/api/web/cro/collector/write
+content-Type: application/json
+
+{
+  "message":"hello everyone",
+  "name": "Kamand Torkzaban",
+  "age": 25
+}
+
+###
+POST http://localhost:8081/api/web/cro/collector/table
+###
+GET http://localhost:8081/api/web/cro/collector
+###
+POST http://localhost:8081/api/web/cro/collector/parquet

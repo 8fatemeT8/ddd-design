@@ -1,5 +1,6 @@
-package ir.smartech.cro.storage
+package ir.smartech.cro.storage.controller
 
+import ir.smartech.cro.storage.service.CollectorService
 import ir.smartech.cro.storage.data.clickhouse.ClickhouseService
 import ir.smartech.cro.storage.data.kafka.dto.KafkaMessage
 import ir.smartech.cro.storage.data.parquet.ParquetService
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/web/cro/collector")
-class Controller(
-    private val service: Service,
+class CollectorController(
+    private val collectorService: CollectorService,
     private val clickhouseService: ClickhouseService,
     private val parquetService: ParquetService
 ) {
@@ -21,7 +22,7 @@ class Controller(
     @PostMapping("/receive")
     fun receiveData(@RequestBody message: KafkaMessage) {
         // TODO : add validation, it must save valid data to kafka
-        service.writeToKafka(message)
+        collectorService.writeToKafka(message)
     }
 
     @PostMapping("/table")
