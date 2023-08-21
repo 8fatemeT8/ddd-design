@@ -1,9 +1,6 @@
 package ir.smartech.cro.storage.config.kafka
 
-import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -12,7 +9,6 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.support.serializer.JsonSerializer
-import java.util.*
 import kotlin.collections.HashMap
 
 
@@ -35,21 +31,5 @@ class KafkaConfig {
     @Bean
     fun kafkaTemplate(): KafkaTemplate<*, *>? {
         return KafkaTemplate(producerFactory())
-    }
-
-    @Bean
-    fun kafkaConsumerProps(): Properties {
-        val properties = Properties()
-        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddress)
-        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer::class.java.name)
-        return properties
-    }
-
-    @Bean
-    fun dailyKafkaConsumer(): KafkaConsumer<*, *> {
-        val props = kafkaConsumerProps()
-        props.setProperty(ConsumerConfig.GROUP_ID_CONFIG, KafkaGroupId.readDailyGateway)
-        return KafkaConsumer<String, Any>(props)
     }
 }
