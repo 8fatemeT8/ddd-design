@@ -3,16 +3,10 @@ content-Type: application/json
 
 {
   "id": 1,
-  "businessId": 2,
+  "productId": 2,
   "appVersion": "{\"hi\":\"aaa\"}",
   "deviceType": "11"
 }
 
 ###
-POST http://localhost:8081/api/web/cro/collector/table
-
-###
-GET http://localhost:8081/api/web/cro/collector
-
-###
-POST http://localhost:8081/api/web/cro/collector/parquet
+GET http://localhost:8081/api/web/cro/collector/return-type

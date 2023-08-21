@@ -8,5 +8,4 @@ class KafkaGroupId {
     companion object {
         const val readDailyGateway = "read-daily-data"
     }
-
 }

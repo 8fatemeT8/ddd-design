@@ -2,18 +2,19 @@ package ir.smartech.cro.storage.data.postgres.entity
 
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType
 import ir.smartech.cro.storage.data.postgres.ReturnType
-import jakarta.persistence.Column
-import jakarta.persistence.EmbeddedId
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.Type
 
 @Entity
-@Table(name = "product_schema")
-class ProductSchema {
+@Table(name = "project_schemas")
+class ProjectSchema {
 
-    @EmbeddedId
-    var productSchemaId: ProductSchemaId? = null
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null
+
+    @OneToOne
+    var user: User? = null
 
     @Column(columnDefinition = "jsonb")
     @Type(JsonBinaryType::class)

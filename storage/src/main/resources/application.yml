@@ -2,16 +2,13 @@ spring:
   application:
     name: CRO Storage
   datasource:
-    driver-class-name: cc.blynk.clickhouse.ClickHouseDriver
-    clickhouse-url: jdbc:clickhouse://localhost:8123/CRO
+    url: jdbc:postgresql://localhost:5432/storage
+    password: 1111
+    username: postgres
+    driver-class-name: org.postgresql.Driver
   kafka:
     server:
       address: 127.0.0.1:9092
-    consumer:
-      gateway-data:
-        activation-status: true
-        group-id: gateway_data_group
-        concurrency: 1
     listener:
       ack-mode: manual
   jpa:
@@ -20,21 +17,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
-        connection:
-          url: jdbc:postgresql://localhost:5432/storage
-          password: 1111
-          username: postgres
-          driver_class: org.postgresql.Driver
 
 server:
   port: 8081
-
-#parquet
-schema:
-  filePath: schema/cro.schema
-
-output:
-  directoryPath: output
-
 #spring.kafka.consumer.enable-auto-commit=true
 
