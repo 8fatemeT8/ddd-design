@@ -3,11 +3,14 @@ spring:
     name: Analytics API
   datasource:
     url: jdbc:postgresql://localhost:5432/cro
-    username: cro_analytics_username
-    password: cro_analytics_password
+    username: postgres
+    password: 1111
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update # TODO: add liquibase for database migrations
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
 server:
   port: 8080
