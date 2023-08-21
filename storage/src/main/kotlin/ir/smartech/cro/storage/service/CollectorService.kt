@@ -5,24 +5,25 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import ir.smartech.cro.storage.config.kafka.KafkaPublisher
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
 import ir.smartech.cro.storage.data.postgres.ReturnType
+import ir.smartech.cro.storage.data.postgres.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.lang.NumberFormatException
 
 @Service
 class CollectorService(
     private val kafkaPublisher: KafkaPublisher<String, Any?>,
-    private val productService: ProductService,
+    private val userRepository: UserRepository,
     private val objectMapper: ObjectMapper
 ) {
 
     fun validate(dto: HashMap<String, String>): List<String> {
         val result = arrayListOf<String>()
-        val businessId = checkBasicValidation(dto, result)
+        checkRequiredValidation(dto, result)
         if (result.isNotEmpty()) return result
-        val product = productService.getById(dto["id"]?.toInt()!!).get()
-        val schema = productService.getSchema(product, businessId!!).data
+        /* TODO get from spring context*/
+        val schema = userRepository.findById(1).get().projectSchema?.data
         dto.forEach { (k, v) ->
-            if (!arrayListOf("id", "businessId").contains(k))
+            if (!arrayListOf("id", "productId").contains(k))
                 when (schema?.get(k)) {
                     ReturnType.NUMBER ->
                         try {
@@ -56,17 +57,16 @@ class CollectorService(
         return result
     }
 
-    private fun checkBasicValidation(
-        dto: HashMap<String, String>,
-        result: ArrayList<String>
+    private fun checkRequiredValidation(
+        dto: HashMap<String, String>, result: ArrayList<String>
     ): Int? {
-        if (dto["id"] == null) result.add("the id must not be null")
-        val businessId = dto["businessId"]?.toInt()
-        if (businessId == null) result.add("the businessId must not be null")
+        val businessId = dto["productId"]?.toInt()
+        if (businessId == null) result.add("the productId must not be null")
         return businessId
     }
 
     fun writeToKafka(message: HashMap<String, String>) {
+        // TODO get topic name from security context
         kafkaPublisher.publish(arrayListOf(message), KafkaTopic.gatewayEmit)
     }
 }

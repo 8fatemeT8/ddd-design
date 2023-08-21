@@ -7,6 +7,5 @@ class KafkaTopic {
 
     companion object {
         const val gatewayEmit: String = "gateway_emit"
-        const val gatewayTest: String = "test_kafka_message"
     }
 }
