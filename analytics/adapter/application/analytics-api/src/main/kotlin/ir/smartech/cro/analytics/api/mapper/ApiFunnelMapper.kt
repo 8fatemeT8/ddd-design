@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component
 class ApiFunnelMapper(private val modelMapper: ModelMapper) :
     BaseMapper<Funnel, FunnelCreateDto, FunnelEditDto, FunnelViewDto, FunnelListDto> {
     override fun toEntity(create: FunnelCreateDto?): Funnel? = modelMapper.map(create, Funnel::class.java)
-
     override fun createToListEntity(create: List<FunnelCreateDto?>?): List<Funnel?>? =
         create?.map { modelMapper.map(it, Funnel::class.java) }
 

@@ -1,6 +1,7 @@
 package ir.smartech.cro.analytics.rdb.entity.funnel
 
 import ir.smartech.cro.analytics.rdb.entity.BaseEntity
+import ir.smartech.cro.analytics.rdb.entity.event.JpaEvent
 import jakarta.persistence.*
 import org.hibernate.envers.AuditMappedBy
 import org.hibernate.envers.Audited
@@ -21,7 +22,6 @@ class JpaStep : BaseEntity() {
     @Column
     var seq: Long? = null
 
-    @Column(nullable = false)
-    var eventName: String? = null
-
+    @ManyToOne
+    var event: JpaEvent? = null
 }

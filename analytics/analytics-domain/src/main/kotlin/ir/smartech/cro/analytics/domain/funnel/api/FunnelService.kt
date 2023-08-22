@@ -1,27 +1,36 @@
 package ir.smartech.cro.analytics.domain.funnel.api
 
+import ir.smartech.cro.analytics.domain.common.api.BaseService
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 
-class FunnelService(private val funnelRepository: FunnelRepository) {
-    fun upsert(entity: Funnel): Funnel? {
+class FunnelService(private val funnelRepository: FunnelRepository) : BaseService<Funnel> {
+    override fun upsert(entity: Funnel): Funnel? {
         return funnelRepository.save(entity)
     }
 
-    fun findById(id: Int): Funnel {
+    override fun findById(id: Int): Funnel {
         return funnelRepository.findById(id).get()
     }
 
-    fun findAll(): List<Funnel?> {
+    override fun findByIdAndProjectId(id: Int, projectId: Int): Funnel {
+        return funnelRepository.findByIdAndProjectId(id, projectId).get()
+    }
+
+    override fun findAll(): List<Funnel?> {
         return funnelRepository.findAll().toList()
     }
 
-    fun deleteById(id: Int): Boolean {
+    override fun findAllProjectId(projectId: Int): List<Funnel?> {
+        return funnelRepository.findAllByProjectId(projectId).toList()
+    }
+
+    override fun deleteById(id: Int): Boolean {
         funnelRepository.deleteById(id)
         return true
     }
 
-    fun delete(entity: Funnel): Boolean {
+    override fun delete(entity: Funnel): Boolean {
         funnelRepository.delete(entity)
         return true
     }

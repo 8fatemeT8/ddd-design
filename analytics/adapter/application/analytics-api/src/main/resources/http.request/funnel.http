@@ -1,6 +1,7 @@
 #Create
 POST http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
+Project-Id: 2
 
 {
   "eventType": "Track",
@@ -8,10 +9,11 @@ Content-Type: application/json
   "startDate": "2023-05-12T12:00:00",
   "expDate": "2023-05-12T12:00:00",
   "enable": true,
-  "project": 1,
   "steps": [
     {
-      "eventName": "item_success",
+      "event": {
+        "id": 1
+      },
       "seq": 0,
       "stepConditions": [
         {
@@ -38,7 +40,9 @@ Content-Type: application/json
       ]
     },
     {
-      "eventName": "login",
+      "event": {
+        "id": 2
+      },
       "seq": 1,
       "stepConditions": [
         {
@@ -59,7 +63,7 @@ Content-Type: application/json
 #Update
 PUT http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
-
+Project-Id: 2
 
 {
   "name": "update first cro funnel",
@@ -72,7 +76,9 @@ Content-Type: application/json
   "steps": [
     {
       "id": 1,
-      "eventName": "QE",
+      "event": {
+        "id": 1
+      },
       "seq": 0,
       "stepConditions": [
         {
@@ -97,7 +103,9 @@ Content-Type: application/json
     },
     {
       "id": 2,
-      "eventName": "logout",
+      "event": {
+        "id": 2
+      },
       "seq": 1,
       "stepConditions": [
         {
@@ -110,20 +118,24 @@ Content-Type: application/json
     }
   ]
 }
+
 ###
 
 #Get By Id
-GET http://localhost:8082/api/web/analytics/funnel/4
+GET http://localhost:8082/api/web/analytics/funnel/6
 Content-Type: application/json
+Project-Id: 2
 
 ###
 
 #Get All
 GET http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
+Project-Id: 2
 
 ###
 
 #Delte By Id
 DELETE http://localhost:8082/api/web/analytics/funnel/5
 Content-Type: application/json
+Project-Id: 2

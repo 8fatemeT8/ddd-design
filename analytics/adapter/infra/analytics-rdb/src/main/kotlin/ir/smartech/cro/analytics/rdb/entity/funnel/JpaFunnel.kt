@@ -2,7 +2,6 @@ package ir.smartech.cro.analytics.rdb.entity.funnel
 
 import ir.smartech.cro.analytics.rdb.entity.BaseEntity
 import ir.smartech.cro.analytics.rdb.entity.JpaProject
-import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
 import jakarta.persistence.*
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
@@ -36,9 +35,6 @@ class JpaFunnel : BaseEntity() {
 
     @Column
     var expDate: Date? = null
-
-    @Enumerated(EnumType.STRING)
-    var eventType: EventType? = null
 
     var name: String? = null
 }

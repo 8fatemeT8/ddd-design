@@ -14,22 +14,32 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
     FunnelRepository {
     override fun save(entity: Funnel): Funnel? {
         // map to jpa entity
-        val jpaFunnel = funnelMapper.toSource(entity) ?: throw NotFoundException()
+        val jpaFunnel = funnelMapper.toDestination(entity) ?: throw NotFoundException()
         val saved = repo.save(jpaFunnel)
         // map to domain entity
-        return funnelMapper.toDestination(saved)
+        return funnelMapper.toSource(saved)
     }
 
     @Transactional
     override fun findById(id: Int): Optional<Funnel> {
-        val dbObject = repo.findById(id).get() ?: throw NotFoundException()
-        return Optional.of(funnelMapper.toDestination(dbObject)!!)
+        val dbObject = repo.findById(id).get()
+        return Optional.of(funnelMapper.toSource(dbObject)!!)
+    }
+
+    override fun findByIdAndProjectId(id: Int, projectId: Int): Optional<Funnel> {
+        val dbObject = repo.findByIdAndProjectId(id, projectId)
+        return Optional.of(funnelMapper.toSource(dbObject)!!)
     }
 
     @Transactional
     override fun findAll(): Iterable<Funnel?> {
         val data = repo.findAll()
-        return data.map { funnelMapper.toDestination(it) }
+        return data.map { funnelMapper.toSource(it) }
+    }
+
+    override fun findAllByProjectId(projectId: Int): Iterable<Funnel?> {
+        val data = repo.findAllByProjectId(projectId)
+        return data.map { funnelMapper.toSource(it) }
     }
 
     override fun deleteById(id: Int) {
@@ -37,7 +47,7 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
     }
 
     override fun delete(entity: Funnel) {
-        val jpaFunnel = funnelMapper.toSource(entity) ?: throw NotFoundException()
+        val jpaFunnel = funnelMapper.toDestination(entity) ?: throw NotFoundException()
         repo.delete(jpaFunnel)
     }
 }

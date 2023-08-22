@@ -1,12 +1,10 @@
 package ir.smartech.cro.analytics.domain.funnel.api.entity
 
-import ir.smartech.cro.analytics.domain.common.api.entity.Project
-import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
+import ir.smartech.cro.analytics.domain.common.api.entity.BaseEntity
+import ir.smartech.cro.analytics.domain.project.api.entity.Project
 import java.util.*
 
-open class Funnel {
-    var id: Int? = null
-
+open class Funnel : BaseEntity() {
     var predecessor: Funnel? = null
 
     var project: Project? = null
@@ -17,18 +15,11 @@ open class Funnel {
 
     var expDate: Date? = null
 
-    var eventType: EventType? = null
-
     var name: String? = null
 
     var enable: Boolean? = true
 
     var isDeleted: Boolean? = false
-
-    open var createdDate: Date? = null
-
-    open var modifiedDate: Date? = null
-
     fun computedPredecessor(parent: Funnel) {
         predecessor = parent
     }

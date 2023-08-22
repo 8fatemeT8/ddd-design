@@ -1,7 +1,8 @@
-package ir.smartech.cro.analytics.rdb.entity
+package ir.smartech.cro.analytics.rdb.entity.event
 
 import ir.smartech.cro.analytics.domain.common.api.enums.PropertyType
-import ir.smartech.cro.analytics.domain.funnel.api.enums.EventType
+import ir.smartech.cro.analytics.rdb.entity.BaseEntity
+import ir.smartech.cro.analytics.rdb.entity.JpaProject
 import jakarta.persistence.*
 import org.hibernate.envers.Audited
 
@@ -19,10 +20,10 @@ class JpaProperty : BaseEntity() {
     @Enumerated(EnumType.STRING)
     var propertyType: PropertyType? = null
 
-    @Enumerated(EnumType.STRING)
-    var eventType: EventType? = null
+    @ManyToOne
+    var event: JpaEvent? = null
 
-    @ManyToOne(optional = true, fetch = FetchType.EAGER)
-    var parent: JpaProperty? = null
+//    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+//    var parent: JpaProperty? = null
 
 }

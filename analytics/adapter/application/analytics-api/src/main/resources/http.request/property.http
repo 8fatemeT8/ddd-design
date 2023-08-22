@@ -1,0 +1,67 @@
+#Create
+POST http://localhost:8082/api/web/analytics/property
+Content-Type: application/json
+Project-Id: 2
+
+{
+  "name": "test event 2",
+  "propertyType": "TEXT",
+  "event": {
+    "id": 2
+  }
+}
+
+###
+#Create
+POST http://localhost:8082/api/web/analytics/property/event/3
+Content-Type: application/json
+Project-Id: 2
+
+[
+  {
+    "name": "test1 event 2 , 2",
+    "propertyType": "TEXT"
+  },
+  {
+    "name": "test2 event 4",
+    "propertyType": "TEXT"
+  },
+  {
+    "name": "test3 event 4",
+    "propertyType": "TEXT"
+  }
+]
+
+###
+#Create
+POST http://localhost:8082/api/web/analytics/property/batch
+Content-Type: application/json
+Project-Id: 2
+
+[
+  {
+    "name": "test1 event 3",
+    "propertyType": "TEXT",
+    "event": {
+      "id": 2
+    }
+  },
+  {
+    "name": "test2 event 3",
+    "propertyType": "TEXT",
+    "event": {
+      "id": 4
+    }
+  },
+  {
+    "name": "test3 event 3",
+    "propertyType": "TEXT",
+    "event": {
+      "id": 4
+    }
+  }
+]
+
+###
+GET http://localhost:8082/api/web/analytics/property/event/2
+Project-Id: 2

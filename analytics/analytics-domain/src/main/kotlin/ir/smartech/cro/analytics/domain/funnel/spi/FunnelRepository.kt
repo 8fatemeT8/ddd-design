@@ -6,7 +6,9 @@ import java.util.Optional
 interface FunnelRepository {
     fun save(entity: Funnel): Funnel?
     fun findById(id: Int): Optional<Funnel>
+    fun findByIdAndProjectId(id: Int, projectId: Int): Optional<Funnel>
     fun findAll(): Iterable<Funnel?>
+    fun findAllByProjectId(projectId: Int): Iterable<Funnel?>
     fun deleteById(id: Int)
     fun delete(entity: Funnel)
 }
