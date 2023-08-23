@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class StepConditionMapper(private val modelMapper: ModelMapper) : Mapper<StepCondition, JpaStepCondition> {
-    override fun toDestination(dto: StepCondition?): JpaStepCondition? = modelMapper.map(dto, JpaStepCondition::class.java)
-    override fun toSource(dto: JpaStepCondition?): StepCondition? = modelMapper.map(dto, StepCondition::class.java)
+    override fun toDestination(dto: StepCondition): JpaStepCondition = modelMapper.map(dto, JpaStepCondition::class.java)
+    override fun toSource(dto: JpaStepCondition): StepCondition = modelMapper.map(dto, StepCondition::class.java)
 }

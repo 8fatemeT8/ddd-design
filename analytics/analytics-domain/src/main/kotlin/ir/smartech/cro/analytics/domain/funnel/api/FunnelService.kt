@@ -5,16 +5,16 @@ import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 
 class FunnelService(private val funnelRepository: FunnelRepository) : BaseService<Funnel> {
-    override fun upsert(entity: Funnel): Funnel? {
+    override fun upsert(entity: Funnel?): Funnel? {
         return funnelRepository.save(entity)
     }
 
-    override fun findById(id: Int): Funnel {
-        return funnelRepository.findById(id).get()
+    override fun findById(id: Int): Funnel? {
+        return funnelRepository.findById(id)
     }
 
-    override fun findByIdAndProjectId(id: Int, projectId: Int): Funnel {
-        return funnelRepository.findByIdAndProjectId(id, projectId).get()
+    override fun findByIdAndProjectId(id: Int, projectId: Int): Funnel? {
+        return funnelRepository.findByIdAndProjectId(id, projectId)
     }
 
     override fun findAll(): List<Funnel?> {
@@ -30,7 +30,7 @@ class FunnelService(private val funnelRepository: FunnelRepository) : BaseServic
         return true
     }
 
-    override fun delete(entity: Funnel): Boolean {
+    override fun delete(entity: Funnel?): Boolean {
         funnelRepository.delete(entity)
         return true
     }

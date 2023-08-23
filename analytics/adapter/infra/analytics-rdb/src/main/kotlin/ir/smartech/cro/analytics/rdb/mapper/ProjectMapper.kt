@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class ProjectMapper(private val modelMapper: ModelMapper) : Mapper<Project, JpaProject> {
-    override fun toDestination(dto: Project?): JpaProject? = modelMapper.map(dto, JpaProject::class.java)
-    override fun toSource(dto: JpaProject?): Project? = modelMapper.map(dto, Project::class.java)
+    override fun toDestination(dto: Project): JpaProject     = modelMapper.map(dto, JpaProject::class.java)
+    override fun toSource(dto: JpaProject): Project = modelMapper.map(dto, Project::class.java)
 }

@@ -15,13 +15,6 @@ abstract class BaseEntity {
     @Column
     open var modifiedDate: Date? = null
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    open var createdBy: User? = null
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    open var modifiedBy: User? = null
-
-
     @PrePersist
     fun setCreateDate() {
         createdDate = if (createdDate == null)

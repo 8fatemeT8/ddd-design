@@ -4,51 +4,35 @@ Content-Type: application/json
 Project-Id: 2
 
 {
-  "eventType": "Track",
   "name": "first cro funnel",
-  "startDate": "2023-05-12T12:00:00",
-  "expDate": "2023-05-12T12:00:00",
-  "enable": true,
   "steps": [
     {
-      "event": {
-        "id": 1
-      },
-      "seq": 0,
+      "eventName": "login",
+      "stepNumber": 0,
       "stepConditions": [
         {
-          "property": {
-            "id": 1
-          },
+          "eventProperty": "hhh",
           "value": "122223",
           "operator": "EQUAL"
         },
         {
-          "property": {
-            "id": 2
-          },
+          "eventProperty": "hhh",
           "value": "12223,4",
           "operator": "NOT_BETWEEN"
         },
         {
-          "property": {
-            "id": 3
-          },
+          "eventProperty": "hhh",
           "value": "1223",
           "operator": "ENDS_WITH"
         }
       ]
     },
     {
-      "event": {
-        "id": 2
-      },
-      "seq": 1,
+      "eventName": "logout",
+      "stepNumber": 1,
       "stepConditions": [
         {
-          "property": {
-            "id": 4
-          },
+          "eventProperty": "hhh",
           "value": "123",
           "operator": "GREATER_THAN_OR_EQUAL"
         }
@@ -66,53 +50,49 @@ Content-Type: application/json
 Project-Id: 2
 
 {
-  "name": "update first cro funnel",
-  "id": 3,
-  "startDate": "2018-05-12T12:00:00.000+00:00",
-  "expDate": "2018-05-12T12:00:00.000+00:00",
+  "name": "111 cro funnel",
+  "id": 12,
+  "startDate": null,
+  "expDate": null,
   "enable": true,
-  "eventType": "Identify",
-  "createdDate": "2019-08-14T07:38:36.710+00:00",
+  "createdDate": "2023-08-23T07:59:07.879+00:00",
+  "modifiedDate": null,
   "steps": [
     {
-      "id": 1,
-      "event": {
-        "id": 1
-      },
-      "seq": 0,
+      "id": 21,
+      "eventName": "11111",
+      "seq": null,
       "stepConditions": [
         {
-          "id": 1,
+          "id": 38,
           "operator": "EQUAL",
-          "value": "122223",
-          "property": null
+          "value": "12222sssss3",
+          "eventProperty": "hhh"
         },
         {
-          "id": 2,
+          "id": 39,
           "operator": "NOT_BETWEEN",
-          "value": "12223,4",
-          "property": null
+          "value": "122ssssss23,4",
+          "eventProperty": "hhh"
         },
         {
-          "id": 3,
+          "id": 40,
           "operator": "ENDS_WITH",
           "value": "1223",
-          "property": null
+          "eventProperty": "hssssshh"
         }
       ]
     },
     {
-      "id": 2,
-      "event": {
-        "id": 2
-      },
-      "seq": 1,
+      "id": 22,
+      "eventName": "222222",
+      "seq": null,
       "stepConditions": [
         {
-          "id": 4,
+          "id": 41,
           "operator": "GREATER_THAN_OR_EQUAL",
-          "value": "123",
-          "property": null
+          "value": "1222223",
+          "eventProperty": "hhh"
         }
       ]
     }
@@ -122,7 +102,7 @@ Project-Id: 2
 ###
 
 #Get By Id
-GET http://localhost:8082/api/web/analytics/funnel/6
+GET http://localhost:8082/api/web/analytics/funnel/12
 Content-Type: application/json
 Project-Id: 2
 
