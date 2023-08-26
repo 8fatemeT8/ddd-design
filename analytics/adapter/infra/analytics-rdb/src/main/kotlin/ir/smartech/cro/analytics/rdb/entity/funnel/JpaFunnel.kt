@@ -20,9 +20,11 @@ class JpaFunnel : BaseEntity() {
 
     @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.REFRESH], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "funnel_id")
-    @Fetch(FetchMode.SELECT)
+    @Fetch(FetchMode.SUBSELECT)
     @AuditMappedBy(mappedBy = "funnel")
     var steps: List<JpaStep?> = arrayListOf()
 
     var name: String? = null
+
+    var productNumber: Int?=null
 }

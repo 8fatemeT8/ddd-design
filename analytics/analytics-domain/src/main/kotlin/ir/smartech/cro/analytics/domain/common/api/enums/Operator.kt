@@ -1,23 +1,87 @@
 package ir.smartech.cro.analytics.domain.common.api.enums
 
+import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionBetweenQueryDto
+import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionOneOfQueryDto
+import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionQueryBaseDto
+import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionSimpleQueryDto
 
-enum class Operator(var key: String?) {
-    EQUAL("equal"),
-    NOT_EQUAL("not_equal"),
-    GREATER_THAN("greater_than"),
-    LESS_THAN("less_than"),
-    BETWEEN("between"),
-    NOT_BETWEEN("not_between"),
-    CONTAINS("contains"),
-    DOES_NOT_CONTAIN("does_not_contain"),
-    STARTS_WITH("starts_with"),
-    ENDS_WITH("ends_with"),
-    IS_NOT_EMPTY("is_not_empty"),
-    IS_EMPTY("is_empty"),
-    EXISTS("exists"),
-    NOT_EXISTS("not_exists"),
-    LESS_THAN_OR_EQUAL("less_than_or_equal"),
-    GREATER_THAN_OR_EQUAL("greater_than_or_equal"),
-    NULL("is_null"),
-    NOT_NULL("is_not_null");
+
+enum class Operator {
+    GREATER_THAN_OR_EQUAL {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+    NOT_BETWEEN {
+        override fun parser(value: String?): StepConditionBetweenQueryDto?{
+            val data = value?.split(",") ?: return null
+            return StepConditionBetweenQueryDto(data[0], data[1])
+        }
+    },
+    EQUAL {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+
+    //GENERAL
+    EQUAL_TO {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+    IS_NOT_EMPTY {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+
+    //STRING
+    STARTS_WITH {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+    ENDS_WITH {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+    MATCHES_REGEX {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+    CONTAINS {
+        override fun parser(value: String?): StepConditionSimpleQueryDto? {
+            value ?: return null
+            return StepConditionSimpleQueryDto(value)
+        }
+    },
+
+    // STRING_NUMERIC
+    ONE_OF {
+        override fun parser(value: String?): StepConditionOneOfQueryDto? {
+            val data = value?.split(",") ?: return null
+            return StepConditionOneOfQueryDto(data)
+        }
+    },
+
+    // NUMERIC_DATE
+    BETWEEN {
+        override fun parser(value: String?): StepConditionBetweenQueryDto? {
+            val data = value?.split(",") ?: return null
+            return StepConditionBetweenQueryDto(data[0], data[1])
+        }
+    };
+
+
+    abstract fun parser(value: String?): StepConditionQueryBaseDto?
 }

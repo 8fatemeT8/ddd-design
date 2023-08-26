@@ -10,7 +10,7 @@ interface BaseService<TEntity> {
     fun findAll(): List<TEntity?>
     fun findAllProjectId(projectId: Int): List<TEntity?>
 
-    fun deleteById(id: Int): Boolean
+    fun deleteById(id: Int, projectId: Int): Boolean
 
-    fun delete(entity: TEntity?): Boolean
+    fun delete(entity: TEntity?, projectId: Int): Boolean
 }

@@ -51,6 +51,6 @@ BaseMapper<TEntity, TCreate, TEdit, TView, TList>, TService : BaseService<TEntit
 
     @DeleteMapping("/{id}")
     fun deleteById(@PathVariable("id") id: Int, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
-        return ResponseEntity.ok(service.deleteById(id))
+        return ResponseEntity.ok(service.deleteById(id,projectId))
     }
 }

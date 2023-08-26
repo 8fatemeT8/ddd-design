@@ -25,13 +25,17 @@ class FunnelService(private val funnelRepository: FunnelRepository) : BaseServic
         return funnelRepository.findAllByProjectId(projectId).toList()
     }
 
-    override fun deleteById(id: Int): Boolean {
-        funnelRepository.deleteById(id)
+    override fun deleteById(id: Int, projectId: Int): Boolean {
+        funnelRepository.deleteById(id, projectId)
         return true
     }
 
-    override fun delete(entity: Funnel?): Boolean {
-        funnelRepository.delete(entity)
+    override fun delete(entity: Funnel?, projectId: Int): Boolean {
+        funnelRepository.delete(entity, projectId)
         return true
+    }
+
+    fun findAllByContainsName(name: String, pageable: Any): Any {
+        return funnelRepository.findAllByNameList(name, pageable)
     }
 }

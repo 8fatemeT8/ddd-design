@@ -6,6 +6,7 @@ import ir.smartech.cro.analytics.rdb.mapper.funnel.FunnelMapper
 import ir.smartech.cro.analytics.rdb.repository.JpaFunnelRepository
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -47,13 +48,21 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
         return data.map { funnelMapper.toSource(it) }
     }
 
-    override fun deleteById(id: Int) {
+    override fun deleteById(id: Int, projectId: Int) {
+        if (!repo.existsByIdAndProjectId(id, projectId))
+            throw ResponseException(ErrorCodes.FORBIDDEN, "you dont have access to modify this object")
         repo.deleteById(id)
     }
 
-    override fun delete(entity: Funnel?) {
+    override fun delete(entity: Funnel?, projectId: Int) {
         if (entity == null) return
         val jpaFunnel = funnelMapper.toDestination(entity)
+        if (!repo.existsByIdAndProjectId(entity.id!!, projectId))
+            throw ResponseException(ErrorCodes.FORBIDDEN, "you dont have access to modify this object")
         repo.delete(jpaFunnel)
+    }
+
+    override fun findAllByNameList(name: String, pageable: Any): Any {
+        return repo.findAllByNameLike("%$name%", pageable as Pageable).map { funnelMapper.toSource(it) }
     }
 }

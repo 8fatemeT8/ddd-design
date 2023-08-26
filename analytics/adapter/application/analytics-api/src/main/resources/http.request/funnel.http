@@ -4,6 +4,7 @@ Content-Type: application/json
 Project-Id: 2
 
 {
+  "productNumber": 2,
   "name": "first cro funnel",
   "steps": [
     {
@@ -12,17 +13,23 @@ Project-Id: 2
       "stepConditions": [
         {
           "eventProperty": "hhh",
+          "eventPropertyType": "NUMBER",
           "value": "122223",
+          "negate": "true",
           "operator": "EQUAL"
         },
         {
           "eventProperty": "hhh",
+          "eventPropertyType": "NUMBER",
           "value": "12223,4",
+          "negate": "true",
           "operator": "NOT_BETWEEN"
         },
         {
           "eventProperty": "hhh",
+          "eventPropertyType": "TEXT",
           "value": "1223",
+          "negate": "true",
           "operator": "ENDS_WITH"
         }
       ]
@@ -33,7 +40,9 @@ Project-Id: 2
       "stepConditions": [
         {
           "eventProperty": "hhh",
+          "eventPropertyType": "TEXT",
           "value": "123",
+          "negate": "false",
           "operator": "GREATER_THAN_OR_EQUAL"
         }
       ]
@@ -50,49 +59,53 @@ Content-Type: application/json
 Project-Id: 2
 
 {
-  "name": "111 cro funnel",
-  "id": 12,
-  "startDate": null,
-  "expDate": null,
-  "enable": true,
-  "createdDate": "2023-08-23T07:59:07.879+00:00",
-  "modifiedDate": null,
+  "id": 43,
+  "name": "3333 cro funnel",
+  "productNumber": 2,
   "steps": [
     {
-      "id": 21,
-      "eventName": "11111",
-      "seq": null,
+      "id": 117,
+      "eventName": "asdf",
+      "stepNumber": 0,
       "stepConditions": [
         {
-          "id": 38,
+          "id": 202,
           "operator": "EQUAL",
-          "value": "12222sssss3",
-          "eventProperty": "hhh"
+          "value": "122223",
+          "negate": "true",
+          "eventProperty": "hhh",
+          "eventPropertyType": "TEXT"
         },
         {
-          "id": 39,
+          "id": 203,
           "operator": "NOT_BETWEEN",
-          "value": "122ssssss23,4",
+          "value": "12223,4",
+          "negate": "true",
+          "eventPropertyType": "TEXT",
           "eventProperty": "hhh"
         },
         {
-          "id": 40,
+          "id": 204,
           "operator": "ENDS_WITH",
           "value": "1223",
-          "eventProperty": "hssssshh"
+          "negate": "true",
+          "eventPropertyType": "TEXT",
+          "eventProperty": "hhh"
         }
       ]
     },
     {
-      "id": 22,
-      "eventName": "222222",
-      "seq": null,
+      "id": 118,
+      "eventName": "3333",
+      "stepNumber": 1,
       "stepConditions": [
         {
-          "id": 41,
+          "id": 205,
           "operator": "GREATER_THAN_OR_EQUAL",
-          "value": "1222223",
-          "eventProperty": "hhh"
+          "value": "123",
+          "negate": "true",
+          "eventPropertyType": "TEXT",
+          "eventProperty": "asdfsadf"
         }
       ]
     }
@@ -102,7 +115,7 @@ Project-Id: 2
 ###
 
 #Get By Id
-GET http://localhost:8082/api/web/analytics/funnel/12
+GET http://localhost:8082/api/web/analytics/funnel/60
 Content-Type: application/json
 Project-Id: 2
 
@@ -116,6 +129,17 @@ Project-Id: 2
 ###
 
 #Delte By Id
-DELETE http://localhost:8082/api/web/analytics/funnel/5
+DELETE http://localhost:8082/api/web/analytics/funnel/11
+Content-Type: application/json
+Project-Id: 2
+
+###
+GET http://localhost:8082/api/web/analytics/funnel/contains/?page=0&size=10
+Project-Id: 2
+
+###
+
+#Query By Id
+GET http://localhost:8082/api/web/analytics/funnel/59/query
 Content-Type: application/json
 Project-Id: 2

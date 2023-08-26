@@ -9,7 +9,7 @@ abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Int? = null
 
-    @Column
+    @Column(updatable = false)
     open var createdDate: Date? = null
 
     @Column
