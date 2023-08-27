@@ -16,7 +16,7 @@ import kotlin.collections.HashMap
 @Configuration
 class KafkaConfig {
 
-    @Value("\${spring.kafka.server.address}")
+    @Value("\${spring.kafka.producer.bootstrap-servers}")
     var serverAddress: String? = null
 
     @Bean
