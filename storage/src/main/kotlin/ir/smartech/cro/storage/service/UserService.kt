@@ -27,7 +27,7 @@ class UserService(
 
     fun setSchema(dto: ProjectSchemaDto) {
         // TODO get user from context
-        val user = getById(1).get()
+        val user = getAll().first()
         val toBeSave = mapToEntity(dto, user)
         projectSchemaRepository.save(toBeSave)
     }

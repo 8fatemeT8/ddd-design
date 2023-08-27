@@ -7,8 +7,8 @@ spring:
     username: postgres
     driver-class-name: org.postgresql.Driver
   kafka:
-    server:
-      address: 127.0.0.1:9092
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
     listener:
       ack-mode: manual
   jpa:

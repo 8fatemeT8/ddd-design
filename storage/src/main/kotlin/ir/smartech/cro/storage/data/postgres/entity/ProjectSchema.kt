@@ -1,6 +1,6 @@
 package ir.smartech.cro.storage.data.postgres.entity
 
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType
+import io.hypersistence.utils.hibernate.type.json.JsonType
 import ir.smartech.cro.storage.data.postgres.ReturnType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type
@@ -16,7 +16,7 @@ class ProjectSchema {
     @OneToOne
     var user: User? = null
 
-    @Column(columnDefinition = "jsonb")
-    @Type(JsonBinaryType::class)
+    @Column(columnDefinition = "json")
+    @Type(JsonType::class)
     var data: HashMap<String, ReturnType>? = hashMapOf()
 }
