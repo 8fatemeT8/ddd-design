@@ -3,8 +3,8 @@ spring:
     name: CRO Storage
   datasource:
     url: jdbc:postgresql://localhost:5432/storage
-    password: 1111
-    username: postgres
+    password: cro_analytics_password
+    username: cro_analytics_username
     driver-class-name: org.postgresql.Driver
   kafka:
     producer:
