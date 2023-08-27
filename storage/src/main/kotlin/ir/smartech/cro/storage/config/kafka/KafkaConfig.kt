@@ -15,12 +15,11 @@ import kotlin.collections.HashMap
 @Configuration
 class KafkaConfig {
 
-    @Value("\${spring.kafka.server.address}")
+    @Value("\${spring.kafka.producer.bootstrap-servers}")
     var serverAddress: String? = null
 
     @Bean
     fun producerFactory(): ProducerFactory<Any, Any> {
-
         val config: MutableMap<String, Any> = HashMap()
         config[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = serverAddress!!
         config[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java

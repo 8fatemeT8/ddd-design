@@ -13,7 +13,7 @@ class CollectorController(
 ) {
 
     @PostMapping("/receive")
-    fun receiveData(@RequestBody message: HashMap<String, String>): ResponseEntity<Any> {
+    fun receiveData(@RequestBody message: HashMap<String?, String?>): ResponseEntity<Any> {
         val result = collectorService.validate(message)
         if (result.isNotEmpty())
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE.value()).body(result)
