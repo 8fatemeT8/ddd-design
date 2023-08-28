@@ -134,7 +134,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        var kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        var kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -150,7 +150,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -167,7 +167,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -184,7 +184,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
 

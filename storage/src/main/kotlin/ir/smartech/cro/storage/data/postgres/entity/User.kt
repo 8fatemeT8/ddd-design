@@ -2,6 +2,9 @@ package ir.smartech.cro.storage.data.postgres.entity
 
 import jakarta.persistence.*
 
+/**
+ * this entity save user (client) data
+ */
 @Entity
 @Table(name = "users")
 class User {

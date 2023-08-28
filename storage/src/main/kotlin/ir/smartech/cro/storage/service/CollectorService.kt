@@ -9,7 +9,11 @@ import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
 import ir.smartech.cro.storage.data.postgres.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.lang.NumberFormatException
+import java.util.*
 
+/**
+ * this class use for implementing Collector logic (for instance: validate data or publish data to kafka)
+ */
 @Service
 class CollectorService(
     private val kafkaPublisher: KafkaPublisher<String, Any?>,
@@ -18,6 +22,10 @@ class CollectorService(
     private val objectMapper: ObjectMapper
 ) {
 
+    /**
+     * this method validates input based on currentUser's schema
+     * just validates required fields and typeMisMatchException
+     */
     fun validate(dto: HashMap<String?, String?>): List<String> {
         val result = arrayListOf<String>()
         checkRequiredValidation(dto, result)
@@ -69,8 +77,11 @@ class CollectorService(
         return businessId
     }
 
+    /**
+     * write message to currentUser's kafkaTopic
+     */
     fun writeToKafka(message: HashMap<String?, String?>) {
         // TODO get topic name from security context
-        kafkaPublisher.publish(arrayListOf(message), KafkaTopic.gatewayEmit)
+        kafkaPublisher.publish(arrayListOf(message), KafkaTopic.COLLECTOR_EMIT)
     }
 }

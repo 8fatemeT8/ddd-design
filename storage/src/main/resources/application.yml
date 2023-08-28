@@ -2,9 +2,9 @@ spring:
   application:
     name: CRO Storage
   datasource:
-    url: jdbc:postgresql://localhost:5432/storage
-    password: cro_analytics_password
-    username: cro_analytics_username
+    url: jdbc:postgresql://localhost:5432/cro_storage
+    password: cro_storage_password
+    username: cro_storage_username
     driver-class-name: org.postgresql.Driver
   kafka:
     producer:
@@ -16,7 +16,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8081
