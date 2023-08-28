@@ -1,5 +1,6 @@
 POST http://localhost:8081/api/web/cro/collector/receive
 content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZHRyYWNlX3Byb2plY3RfMSIsImV4cCI6MTY5MzI0MjY1MiwiaWF0IjoxNjkzMjEzODUyfQ.Wj530sybcweH_1BrJPgWAOvYWyZ1jbOZlb-xxhz3_S_fLbdfjeaHgVi_Bqn4UCyioOw_gEnGegJjE-5w7dVQyQ
 
 {
   "id": 1,
@@ -10,3 +11,4 @@ content-Type: application/json
 
 ###
 GET http://localhost:8081/api/web/cro/collector/return-type
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZHRyYWNlX3Byb2plY3RfMSIsImV4cCI6MTY5MzI0MjY1MiwiaWF0IjoxNjkzMjEzODUyfQ.Wj530sybcweH_1BrJPgWAOvYWyZ1jbOZlb-xxhz3_S_fLbdfjeaHgVi_Bqn4UCyioOw_gEnGegJjE-5w7dVQyQ

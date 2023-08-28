@@ -1,19 +1,24 @@
 package ir.smartech.cro.storage.service
 
+import ir.smartech.cro.storage.config.security.JwtUserDetailsService
 import ir.smartech.cro.storage.data.postgres.dto.ProjectSchemaDto
-import ir.smartech.cro.storage.data.postgres.entity.ProjectSchema
 import ir.smartech.cro.storage.data.postgres.entity.User
-import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
 import ir.smartech.cro.storage.data.postgres.repository.UserRepository
+import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.Optional
+import ir.smartech.cro.storage.data.postgres.entity.ProjectSchema
 
 @Service
 class UserService(
     private val userRepository: UserRepository,
     private val projectSchemaRepository: ProjectSchemaRepository,
+    private val jwtUserDetailsService: JwtUserDetailsService,
+    private val passwordEncoder: PasswordEncoder
 ) {
     fun upsert(entity: User): User {
+        entity.password = passwordEncoder.encode(entity.password)
         return userRepository.save(entity)
     }
 
@@ -26,8 +31,7 @@ class UserService(
     }
 
     fun setSchema(dto: ProjectSchemaDto) {
-        // TODO get user from context
-        val user = getAll().first()
+        val user = jwtUserDetailsService.getCurrentUser() ?: return
         val toBeSave = mapToEntity(dto, user)
         projectSchemaRepository.save(toBeSave)
     }

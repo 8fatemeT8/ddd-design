@@ -1,0 +1,17 @@
+POST http://localhost:8081/api/web/account/login
+content-Type: application/json
+
+{
+  "username": "adtrace_1",
+  "password": "1111"
+}
+
+###
+POST http://localhost:8081/api/web/account/register
+content-Type: application/json
+
+{
+  "username": "adtrace_project_1",
+  "password": "111111",
+  "name": "Adtrace"
+}
