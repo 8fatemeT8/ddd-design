@@ -2,7 +2,7 @@ spring:
   application:
     name: Analytics API
   datasource:
-    url: jdbc:postgresql://localhost:5432/cro
+    url: jdbc:postgresql://localhost:5432/cro_analytics
     username: cro_analytics_username
     password: cro_analytics_password
     driver-class-name: org.postgresql.Driver
