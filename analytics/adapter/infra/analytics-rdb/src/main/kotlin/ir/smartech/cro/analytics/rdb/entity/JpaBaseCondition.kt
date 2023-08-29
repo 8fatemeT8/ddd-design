@@ -9,13 +9,14 @@ open class JpaBaseCondition : BaseEntity() {
 
     open var eventProperty: String? = null
 
+    @Enumerated(EnumType.STRING)
     open var eventPropertyType: PropertyType? = null
 
-    @Column
+    @Column(name = "condition_operator")
     @Enumerated(EnumType.STRING)
     open var operator: Operator? = null
 
-    @Column
+    @Column(name = "condition_value")
     open var value: String? = null
 
     var negate: Boolean? = null

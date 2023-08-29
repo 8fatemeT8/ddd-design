@@ -38,7 +38,7 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
     }
 
     @Transactional
-    override fun findAll(): Iterable<Funnel?> {
+    override fun findAll(): List<Funnel?> {
         val data = repo.findAll()
         return data.map { funnelMapper.toSource(it) }
     }
@@ -62,7 +62,8 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
         repo.delete(jpaFunnel)
     }
 
-    override fun findAllByNameList(name: String, pageable: Any): Any {
-        return repo.findAllByNameLike("%$name%", pageable as Pageable).map { funnelMapper.toSource(it) }
+    override fun findAllByNameList(name: String, pageable: Any, projectId: Int): Any {
+        return repo.findAllByNameLikeAndProjectId("%$name%", projectId, pageable as Pageable)
+            .map { funnelMapper.toSource(it) }
     }
 }

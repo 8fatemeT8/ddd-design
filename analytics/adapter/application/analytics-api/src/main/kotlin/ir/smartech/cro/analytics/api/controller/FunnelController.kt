@@ -42,7 +42,7 @@ class FunnelController(
         pageable: Pageable,
         @RequestHeader("Project-Id") projectId: Int
     ): ResponseEntity<*> {
-        val result = funnelService.findAllByContainsName(name, pageable) as Page<Funnel?>
+        val result = funnelService.findAllByContainsName(name, pageable, projectId) as Page<Funnel?>
         val response = PageImpl(apiFunnelMapper.toList(result.content)!!, pageable, result.totalPages.toLong())
         return ResponseEntity.ok(response)
     }

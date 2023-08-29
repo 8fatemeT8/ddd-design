@@ -10,5 +10,5 @@ interface FunnelRepository {
     fun findAllByProjectId(projectId: Int): Iterable<Funnel?>
     fun deleteById(id: Int, projectId: Int)
     fun delete(entity: Funnel?, projectId: Int)
-    fun findAllByNameList(name: String, pageable: Any): Any
+    fun findAllByNameList(name: String, pageable: Any, projectId: Int): Any
 }

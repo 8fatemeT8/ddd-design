@@ -134,7 +134,7 @@ Content-Type: application/json
 Project-Id: 2
 
 ###
-GET http://localhost:8082/api/web/analytics/funnel/contains/?page=0&size=10
+GET http://localhost:8082/api/web/analytics/funnel/contains/fun?page=0&size=10
 Project-Id: 2
 
 ###

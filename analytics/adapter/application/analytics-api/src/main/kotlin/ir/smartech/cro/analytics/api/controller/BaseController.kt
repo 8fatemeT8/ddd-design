@@ -17,7 +17,7 @@ BaseMapper<TEntity, TCreate, TEdit, TView, TList>, TService : BaseService<TEntit
 
 
     @PostMapping
-    fun create(@RequestBody dto: TCreate, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
+    fun create(@RequestBody dto: TCreate?, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
         val entity = mapper.toEntity(dto) ?: return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body("this object not found")
         beforeSave(entity, projectId)
@@ -27,7 +27,7 @@ BaseMapper<TEntity, TCreate, TEdit, TView, TList>, TService : BaseService<TEntit
     }
 
     @PutMapping
-    fun update(@RequestBody dto: TEdit, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
+    fun update(@RequestBody dto: TEdit?, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
         val entity = mapper.toEntity(dto) ?: return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body("this object not found")
         beforeSave(entity, projectId)

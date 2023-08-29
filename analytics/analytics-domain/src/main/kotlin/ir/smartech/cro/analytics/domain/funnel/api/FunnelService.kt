@@ -35,7 +35,7 @@ class FunnelService(private val funnelRepository: FunnelRepository) : BaseServic
         return true
     }
 
-    fun findAllByContainsName(name: String, pageable: Any): Any {
-        return funnelRepository.findAllByNameList(name, pageable)
+    fun findAllByContainsName(name: String, pageable: Any, projectId: Int): Any {
+        return funnelRepository.findAllByNameList(name, pageable, projectId)
     }
 }
