@@ -29,7 +29,6 @@ import java.util.concurrent.Future
 @EmbeddedKafka(
     partitions = 1,
     topics = [KafkaTopic.COLLECTOR_EMIT],
-    bootstrapServersProperty = "spring.kafka.bootstrap-servers"
 )
 @TestPropertySource(locations = ["classpath:application.yml"])
 open class BaseTest {
