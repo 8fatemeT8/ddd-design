@@ -71,8 +71,8 @@ class CollectorService(
 
     private fun checkRequiredValidation(
         dto: HashMap<String?, String?>, result: ArrayList<String>
-    ): Int? {
-        val businessId = dto["productId"]?.toInt()
+    ): String? {
+        val businessId = dto["productId"]
         if (businessId == null) result.add("the productId must not be null")
         return businessId
     }
