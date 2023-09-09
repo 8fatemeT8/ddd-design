@@ -1,0 +1,18 @@
+POST http://localhost:8081/api/web/account/login
+content-Type: application/json
+
+{
+  "username": "intrack_3",
+  "password": "111111"
+}
+
+###
+POST http://localhost:8081/api/web/account/register
+content-Type: application/json
+
+{
+  "username": "intrack_3",
+  "password": "111111",
+  "name": "Intrack_3",
+  "topicName": "intrack-events-queue-test-0"
+}

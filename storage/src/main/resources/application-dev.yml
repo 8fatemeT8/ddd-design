@@ -2,9 +2,9 @@ spring:
   application:
     name: CRO Storage
   datasource:
-    url: jdbc:postgresql://localhost:5432/cro_storage
-    password: cro_storage_password
-    username: cro_storage_username
+    url: jdbc:postgresql://localhost:5432/storage
+    password: 1111
+    username: postgres
     driver-class-name: org.postgresql.Driver
   kafka:
     producer:
@@ -17,14 +17,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  profiles:
-    active: dev,default
 
 server:
   port: 8081
 #spring.kafka.consumer.enable-auto-commit=true
 
 jwt:
-  secret: cro_jwt_secret
+  secret: 3lkj90i3rkn$OKLJB!){@lknasdf
   token:
-    validity: 28800000
+    validity: 2880000000
