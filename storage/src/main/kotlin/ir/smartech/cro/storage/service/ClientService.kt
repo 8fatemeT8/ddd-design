@@ -5,6 +5,7 @@ import ir.smartech.cro.storage.data.postgres.entity.ClientSchema
 import ir.smartech.cro.storage.data.postgres.entity.Client
 import ir.smartech.cro.storage.data.postgres.repository.ClientSchemaRepository
 import ir.smartech.cro.storage.data.postgres.repository.ClientRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -15,11 +16,13 @@ import java.util.*
 class ClientService(
     private val clientRepository: ClientRepository,
     private val clientSchemaRepository: ClientSchemaRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
     /**
      * create and update client
      */
     fun upsert(entity: Client): Client {
+        entity.password = passwordEncoder.encode(entity.password)
         return clientRepository.save(entity)
     }
 

@@ -1,13 +1,15 @@
 package ir.smartech.cro.storage.data.postgres.entity
 
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 /**
  * this entity save Client authentication data such as name, username, password, etc.
  */
 @Entity
 @Table(name = "clients")
-class Client {
+class Client : UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +22,8 @@ class Client {
     override fun getUsername(): String? {
         return username!!
     }
-    fun setUsername(value: String?){
+
+    fun setUsername(value: String?) {
         username = value
     }
 
@@ -28,7 +31,8 @@ class Client {
     override fun getPassword(): String? {
         return password
     }
-    fun setPassword(value: String?){
+
+    fun setPassword(value: String?) {
         password = value
     }
 
@@ -38,7 +42,7 @@ class Client {
     var clientSchema: ClientSchema? = null
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-       return arrayListOf()
+        return arrayListOf()
     }
 
 

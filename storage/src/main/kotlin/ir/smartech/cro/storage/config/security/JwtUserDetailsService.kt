@@ -1,7 +1,7 @@
 package ir.smartech.cro.storage.config.security
 
-import ir.smartech.cro.storage.data.postgres.entity.User
-import ir.smartech.cro.storage.data.postgres.repository.UserRepository
+import ir.smartech.cro.storage.data.postgres.entity.Client
+import ir.smartech.cro.storage.data.postgres.repository.ClientRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.security.core.userdetails.UserDetails
@@ -18,34 +18,34 @@ class JwtUserDetailsService : UserDetailsService {
     private val bcryptEncoder: PasswordEncoder? = null
 
     @Autowired
-    private val userRepository: UserRepository? = null
+    private val clientRepository: ClientRepository? = null
 
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userRepository?.findByUsername(username)
+        val user = clientRepository?.findByUsername(username)
         if (user == null)
             onUserNotFound()
         return user!!
     }
 
-    fun getCurrentUser(): User? {
-        val currentUser: Optional<String?>? = SecurityUtils.getCurrentUserLogin()
-        if (currentUser?.isEmpty == true) {
+    fun getCurrentClient(): Client? {
+        val currentClient: Optional<String?>? = SecurityUtils.getCurrentClientLogin()
+        if (currentClient?.isEmpty == true) {
             onUserNotFound()
         }
-        val currentUserName: String = currentUser?.get()!!
-        val user: User? = userRepository!!.findByUsername(currentUserName)
-        if (user == null) {
+        val currentUserName: String = currentClient?.get()!!
+        val client: Client? = clientRepository!!.findByUsername(currentUserName)
+        if (client == null) {
             onUserNotFound()
         }
-        return user
+        return client
     }
 
     private fun onUserNotFound() {
         throw NotFoundException()
     }
 
-    fun save(user: User): User? {
-        user.setPassword(bcryptEncoder!!.encode(user.password))
-        return userRepository!!.save(user)
+    fun save(client: Client): Client? {
+        client.password = bcryptEncoder!!.encode(client.password!!)
+        return clientRepository!!.save(client)
     }
 }

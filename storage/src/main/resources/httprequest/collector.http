@@ -1,6 +1,6 @@
-POST http://cro-stage-1:8081/api/web/cro/collector/receive
+POST http://localhost:8081/api/web/cro/collector/receive
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTQxMDgyODYsImlhdCI6MTY5MzgyODI4Nn0.kNbet7vJhhMFU-nWd_yDDHXGDYT-y4C_BMiv-xyf4q3s5JaWyzYtLSIjyNLLkc5FugllfBZylO1CQ8_EfEBrQw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g
 
 {
   "productId": "1111",
@@ -12,4 +12,4 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2O
 
 ###
 GET http://localhost:8081/api/web/cro/collector/return-type
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZHRyYWNlX3Byb2plY3RfMSIsImV4cCI6MTY5MzI0MjY1MiwiaWF0IjoxNjkzMjEzODUyfQ.Wj530sybcweH_1BrJPgWAOvYWyZ1jbOZlb-xxhz3_S_fLbdfjeaHgVi_Bqn4UCyioOw_gEnGegJjE-5w7dVQyQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g

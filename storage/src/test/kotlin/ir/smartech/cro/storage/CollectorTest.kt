@@ -38,7 +38,21 @@ class CollectorTest(
         mockMvc.sendPost("/api/web/account/register", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
-        return
+    }
+
+    @Test
+    fun testLogin() {
+        val json = """
+            {
+              "username": "intract_project_1",
+              "password": "111111"
+            }
+        """.trimIndent()
+
+        mockMvc.sendPost("/api/web/account/login", json)
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.jwtToken").isNotEmpty)
+            .andReturn()
     }
 
     @Test

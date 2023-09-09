@@ -1,23 +1,31 @@
 POST http://localhost:8081/api/web/cro/client
 content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g
 
 {
-  "name": "Adtrace"
+  "name": "Adtrace",
+  "clientname": "adtrace_1",
+  "password": "1111"
 }
 
 ###
 GET http://localhost:8081/api/web/cro/client
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTQyNjI5MTMsImlhdCI6MTY5NDI2MDAzM30._b9_-mrFZRQ3tLeFzUAr0b0ADv0o6es0EGzwC9tPbtpA1uoYl18zYCC3z-36ZbXih9gF2WAdCLzDFKkOVt9-gg
 
 ###
 GET http://localhost:8081/api/web/cro/client/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g
 
 ###
 POST http://localhost:8081/api/web/cro/client/schema
 content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g
 
 {
   "data": {
-    "appVersion": "STRING",
-    "deviceType": "STRING"
+    "product_id":"STRING",
+    "client_id":"STRING",
+    "timestamp":"NUMBER",
+    "event_name":"STRING"
   }
 }

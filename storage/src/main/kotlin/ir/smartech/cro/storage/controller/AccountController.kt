@@ -2,9 +2,9 @@ package ir.smartech.cro.storage.controller
 
 import ir.smartech.cro.storage.config.security.JwtRequestDto
 import ir.smartech.cro.storage.config.security.JwtResponseDto
-import ir.smartech.cro.storage.data.postgres.entity.User
+import ir.smartech.cro.storage.data.postgres.entity.Client
 import ir.smartech.cro.storage.service.AuthenticationService
-import ir.smartech.cro.storage.service.UserService
+import ir.smartech.cro.storage.service.ClientService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/web/account")
 class AccountController(
     private val authenticationService: AuthenticationService,
-    private val userService: UserService
+    private val clientService: ClientService
 ) {
 
 
@@ -25,9 +25,9 @@ class AccountController(
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody entity: User): ResponseEntity<JwtResponseDto> {
+    fun register(@RequestBody entity: Client): ResponseEntity<JwtResponseDto> {
         val password = entity.password
-        val saved = userService.upsert(entity)
+        val saved = clientService.upsert(entity)
         return ResponseEntity.ok(authenticationService.authenticate(entity.username, password))
     }
 }

@@ -25,4 +25,4 @@ server:
 jwt:
   secret: 3lkj90i3rkn$OKLJB!){@lknasdf
   token:
-    validity: 2880000
+    validity: 2880000000

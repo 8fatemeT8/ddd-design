@@ -9,7 +9,7 @@ import java.util.*
 class SecurityUtils private constructor() {
 
     companion object {
-        fun getCurrentUserLogin(): Optional<String?>? {
+        fun getCurrentClientLogin(): Optional<String?>? {
             val securityContext: SecurityContext = SecurityContextHolder.getContext()
             return Optional.ofNullable(securityContext.authentication)
                 .map { authentication ->

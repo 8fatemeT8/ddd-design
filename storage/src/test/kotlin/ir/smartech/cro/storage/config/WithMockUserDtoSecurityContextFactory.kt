@@ -1,6 +1,6 @@
 package ir.smartech.cro.storage.config
 
-import ir.smartech.cro.storage.data.postgres.entity.User
+import ir.smartech.cro.storage.data.postgres.entity.Client
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
@@ -12,7 +12,7 @@ class WithMockUserDtoSecurityContextFactory : WithSecurityContextFactory<WithMoc
     override fun createSecurityContext(withMockUserDto: WithMockUserDto?): SecurityContext {
         val context = SecurityContextHolder.createEmptyContext()
 
-        val principal = User().apply {
+        val principal = Client().apply {
             id =withMockUserDto?.id
             username = withMockUserDto?.username
             password = withMockUserDto?.password
