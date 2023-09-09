@@ -10,6 +10,10 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * this class implement the [FunnelRepository] methods like crud
+ * and provide the appropriate mapper for method input and output
+ */
 @Component
 @Transactional
 class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val funnelMapper: FunnelMapper) :
@@ -29,8 +33,8 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
         return funnelMapper.toSource(dbObject)
     }
 
-    override fun findByIdAndProjectId(id: Int, projectId: Int): Funnel? {
-        val dbObject = repo.findByIdAndProjectId(id, projectId) ?: throw ResponseException(
+    override fun findByIdAndClientId(id: Int, clientId: Int): Funnel? {
+        val dbObject = repo.findByIdAndClientId(id, clientId) ?: throw ResponseException(
             ErrorCodes.NOT_FOUND,
             "the funnel with $id id not found"
         )
@@ -43,27 +47,27 @@ class FunnelRepositoryAdapter(private val repo: JpaFunnelRepository, private val
         return data.map { funnelMapper.toSource(it) }
     }
 
-    override fun findAllByProjectId(projectId: Int): Iterable<Funnel?> {
-        val data = repo.findAllByProjectId(projectId)
+    override fun findAllByClientId(clientId: Int): Iterable<Funnel?> {
+        val data = repo.findAllByClientId(clientId)
         return data.map { funnelMapper.toSource(it) }
     }
 
-    override fun deleteById(id: Int, projectId: Int) {
-        if (!repo.existsByIdAndProjectId(id, projectId))
+    override fun deleteById(id: Int, clientId: Int) {
+        if (!repo.existsByIdAndClientId(id, clientId))
             throw ResponseException(ErrorCodes.FORBIDDEN, "you dont have access to modify this object")
         repo.deleteById(id)
     }
 
-    override fun delete(entity: Funnel?, projectId: Int) {
+    override fun delete(entity: Funnel?, clientId: Int) {
         if (entity == null) return
         val jpaFunnel = funnelMapper.toDestination(entity)
-        if (!repo.existsByIdAndProjectId(entity.id!!, projectId))
+        if (!repo.existsByIdAndClientId(entity.id!!, clientId))
             throw ResponseException(ErrorCodes.FORBIDDEN, "you dont have access to modify this object")
         repo.delete(jpaFunnel)
     }
 
-    override fun findAllByNameList(name: String, pageable: Any, projectId: Int): Any {
-        return repo.findAllByNameLikeAndProjectId("%$name%", projectId, pageable as Pageable)
+    override fun findAllByNameList(name: String, pageable: Any, clientId: Int): Any {
+        return repo.findAllByNameLikeAndClientId("%$name%", clientId, pageable as Pageable)
             .map { funnelMapper.toSource(it) }
     }
 }

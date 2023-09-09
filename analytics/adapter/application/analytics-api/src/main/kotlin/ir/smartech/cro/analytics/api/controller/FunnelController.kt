@@ -10,46 +10,62 @@ import ir.smartech.cro.analytics.domain.common.api.utils.ResponseException
 import ir.smartech.cro.analytics.domain.funnel.api.FunnelService
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
 import ir.smartech.cro.analytics.domain.funnel.api.entity.toQueryDto
-import ir.smartech.cro.analytics.domain.project.api.ProjectService
+import ir.smartech.cro.analytics.domain.client.api.ClientService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * this class contains query api and another api for getting data with some search in object name,
+ * also it has crud apis
+ */
 @RestController
 @RequestMapping("/api/web/analytics/funnel")
 class FunnelController(
     private val funnelService: FunnelService,
     private val apiFunnelMapper: ApiFunnelMapper,
-    private val projectService: ProjectService
+    private val clientService: ClientService
 ) :
     BaseController<Funnel, FunnelCreateDto, FunnelEditDto, FunnelViewDto, FunnelListDto, ApiFunnelMapper, FunnelService>(
         apiFunnelMapper,
         funnelService
     ) {
-    override fun beforeSave(entity: Funnel, projectId: Int) {
-        val project = projectService.getById(projectId) ?: throw ResponseException(
+    /**
+     * validate the clientId and set on entity before persist
+     */
+    override fun beforeSave(entity: Funnel, clientId: Int) {
+        val client = clientService.getById(clientId) ?: throw ResponseException(
             ErrorCodes.NOT_FOUND,
-            "the project wit $projectId id not found"
+            "the client wit $clientId id not found"
         )
-        entity.project = project
+        entity.client = client
     }
 
+    /**
+     * this api returns funnels by search on funnel name
+     * @param name we return funnels that contains this input
+     * @param clientId also set predicate that just return Client's funnels
+     * @return Page of FunnelListDto
+     */
     @GetMapping("contains/{name}")
     fun getAllByContains(
         @PathVariable("name") name: String,
         pageable: Pageable,
-        @RequestHeader("Project-Id") projectId: Int
+        @RequestHeader("Client-id") clientId: Int
     ): ResponseEntity<*> {
-        val result = funnelService.findAllByContainsName(name, pageable, projectId) as Page<Funnel?>
+        val result = funnelService.findAllByContainsName(name, pageable, clientId) as Page<Funnel?>
         val response = PageImpl(apiFunnelMapper.toList(result.content)!!, pageable, result.totalPages.toLong())
         return ResponseEntity.ok(response)
     }
 
 
+    /**
+     * returns funnel query
+     */
     @GetMapping("/{id}/query")
-    fun query(@PathVariable("id") id: Int?, @RequestHeader("Project-Id") projectId: Int): ResponseEntity<*> {
-        return ResponseEntity.ok(funnelService.findByIdAndProjectId(id!!, projectId)?.toQueryDto())
+    fun query(@PathVariable("id") id: Int?, @RequestHeader("Client-id") clientId: Int): ResponseEntity<*> {
+        return ResponseEntity.ok(funnelService.findByIdAndClientId(id!!, clientId)?.toQueryDto())
     }
 }

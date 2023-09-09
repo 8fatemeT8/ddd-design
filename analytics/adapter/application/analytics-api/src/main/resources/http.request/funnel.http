@@ -1,7 +1,7 @@
 #Create
 POST http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2
 
 {
   "productNumber": 2,
@@ -56,7 +56,7 @@ Project-Id: 2
 #Update
 PUT http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2
 
 {
   "id": 43,
@@ -117,29 +117,29 @@ Project-Id: 2
 #Get By Id
 GET http://localhost:8082/api/web/analytics/funnel/60
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2
 
 ###
 
 #Get All
 GET http://localhost:8082/api/web/analytics/funnel
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2
 
 ###
 
 #Delte By Id
 DELETE http://localhost:8082/api/web/analytics/funnel/11
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2
 
 ###
 GET http://localhost:8082/api/web/analytics/funnel/contains/fun?page=0&size=10
-Project-Id: 2
+Client-id: 2
 
 ###
 
 #Query By Id
 GET http://localhost:8082/api/web/analytics/funnel/59/query
 Content-Type: application/json
-Project-Id: 2
+Client-id: 2

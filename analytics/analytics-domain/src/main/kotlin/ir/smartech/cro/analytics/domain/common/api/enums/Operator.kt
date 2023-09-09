@@ -6,6 +6,10 @@ import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionQueryBaseDto
 import ir.smartech.cro.analytics.domain.funnel.api.dto.StepConditionSimpleQueryDto
 
 
+/**
+ * all acceptable operator that the client can choose in analytics conditions
+ * because of the operator value difference we decided to using some different dto and implementing parser method
+ * */
 enum class Operator {
     GREATER_THAN_OR_EQUAL {
         override fun parser(value: String?): StepConditionSimpleQueryDto? {

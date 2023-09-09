@@ -27,37 +27,37 @@ class BaseMockMVCTest {
             .build()
     }
 
-    fun MockMvc.sendPost(url: String, body: String, projectId: Int? = null): ResultActions {
+    fun MockMvc.sendPost(url: String, body: String, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
-                .header("Project-id", projectId ?: "1")
+                .header("Client-id", clientId ?: "1")
         )
     }
 
-    fun MockMvc.sendGet(url: String, projectId: Int? = null): ResultActions {
+    fun MockMvc.sendGet(url: String, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.get(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Project-id", projectId ?: "1")
+                .header("Client-id", clientId ?: "1")
         )
     }
 
-    fun MockMvc.sendDelete(url: String, projectId: Int? = null): ResultActions {
+    fun MockMvc.sendDelete(url: String, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.delete(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Project-id", projectId ?: "1")
+                .header("Client-id", clientId ?: "1")
         )
     }
 
-    fun MockMvc.sendPut(url: String, body: String, projectId: Int? = null): ResultActions {
+    fun MockMvc.sendPut(url: String, body: String, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.put(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
-                .header("Project-id", projectId ?: "1")
+                .header("Client-id", clientId ?: "1")
         )
     }
 }

@@ -4,7 +4,7 @@ import BaseMockMVCTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import ir.smartech.cro.analytics.api.dto.funnel.FunnelViewDto
 import ir.smartech.cro.analytics.rdb.repository.JpaFunnelRepository
-import ir.smartech.cro.analytics.rdb.repository.JpaProjectRepository
+import ir.smartech.cro.analytics.rdb.repository.JpaClientRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ class FunnelTest(
     @Autowired
     private val repo: JpaFunnelRepository,
     @Autowired
-    private val projectRepository: JpaProjectRepository,
+    private val clientRepository: JpaClientRepository,
     @Autowired
     private val objectMapper: ObjectMapper
 ) : BaseMockMVCTest() {
@@ -22,7 +22,7 @@ class FunnelTest(
     @BeforeEach
     fun clearDb() {
         repo.deleteAll()
-        projectRepository.deleteAll()
+        clientRepository.deleteAll()
     }
 
     @Test
@@ -36,11 +36,11 @@ class FunnelTest(
         """.trimIndent()
 
 
-        mockMvc.sendPost("/api/web/analytics/project", json)
+        mockMvc.sendPost("/api/web/analytics/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        val project = projectRepository.findAll().first()
+        val client = clientRepository.findAll().first()
 
         json = """
             {
@@ -91,7 +91,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("first cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -121,11 +121,11 @@ class FunnelTest(
         """.trimIndent()
 
 
-        mockMvc.sendPost("/api/web/analytics/project", json)
+        mockMvc.sendPost("/api/web/analytics/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        val project = projectRepository.findAll().first()
+        val client = clientRepository.findAll().first()
 
         json = """
             {
@@ -176,7 +176,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(2))
@@ -244,7 +244,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPut("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPut("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("update ${result[0].name}"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(6))
@@ -282,11 +282,11 @@ class FunnelTest(
         """.trimIndent()
 
 
-        mockMvc.sendPost("/api/web/analytics/project", json)
+        mockMvc.sendPost("/api/web/analytics/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        val project = projectRepository.findAll().first()
+        val client = clientRepository.findAll().first()
 
         json = """
             {
@@ -337,7 +337,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -354,7 +354,7 @@ class FunnelTest(
         val result = repo.findAll().toList()
         assert(result.size == 1)
 
-        val get = mockMvc.sendGet("/api/web/analytics/funnel/${result.first().id}", project.id)
+        val get = mockMvc.sendGet("/api/web/analytics/funnel/${result.first().id}", client.id)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -385,11 +385,11 @@ class FunnelTest(
         """.trimIndent()
 
 
-        mockMvc.sendPost("/api/web/analytics/project", json)
+        mockMvc.sendPost("/api/web/analytics/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        var project = projectRepository.findAll().first()
+        var client = clientRepository.findAll().first()
 
         json = """
             {
@@ -440,7 +440,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -496,7 +496,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -549,7 +549,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -602,28 +602,28 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
 
-        mockMvc.sendGet("/api/web/analytics/funnel", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(4))
             .andReturn()
 
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/1?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/1?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(2))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/2?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/2?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(3))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/4?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/4?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
@@ -637,11 +637,11 @@ class FunnelTest(
         """.trimIndent()
 
 
-        mockMvc.sendPost("/api/web/analytics/project", json)
+        mockMvc.sendPost("/api/web/analytics/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        project = projectRepository.findAll().first { it.name == "Intrack2" }
+        client = clientRepository.findAll().first { it.name == "Intrack2" }
 
         json = """
             {
@@ -692,7 +692,7 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -745,27 +745,27 @@ class FunnelTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
             .andReturn()
 
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/second?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/second?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/third?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/third?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/fun?page=0&size=10", project.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/fun?page=0&size=10", client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(2))
             .andReturn()

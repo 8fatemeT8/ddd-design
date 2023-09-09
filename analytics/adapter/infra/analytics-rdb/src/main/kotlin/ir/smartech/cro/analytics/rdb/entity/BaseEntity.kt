@@ -3,6 +3,9 @@ package ir.smartech.cro.analytics.rdb.entity
 import jakarta.persistence.*
 import java.util.*
 
+/**
+ * this class must be the parent of all entity classes
+ */
 @MappedSuperclass
 abstract class BaseEntity {
     @Id

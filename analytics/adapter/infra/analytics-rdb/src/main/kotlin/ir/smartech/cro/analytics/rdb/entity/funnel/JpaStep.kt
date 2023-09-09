@@ -7,6 +7,10 @@ import org.hibernate.annotations.FetchMode
 import org.hibernate.envers.AuditMappedBy
 import org.hibernate.envers.Audited
 
+/**
+ * this is the entity of Steps in analytics-domain module
+ * in this class we can use the jpa features
+ */
 @Audited
 @Entity
 @Table(name = "funnel_steps")

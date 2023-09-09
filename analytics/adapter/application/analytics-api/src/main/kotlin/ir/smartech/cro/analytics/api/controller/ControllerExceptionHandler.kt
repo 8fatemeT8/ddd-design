@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
-
+/**
+ * this controller catch ResponseException and return meaningful response
+ */
 @ControllerAdvice
 class ControllerExceptionHandler {
     @ExceptionHandler(ResponseException::class)
