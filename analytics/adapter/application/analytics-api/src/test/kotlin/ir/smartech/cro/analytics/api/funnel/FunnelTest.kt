@@ -111,6 +111,167 @@ class FunnelTest(
 
 
     @Test
+    fun `create and update`() {
+        var json = """
+            {
+              "name": "Intrack",
+              "description" : "test test",
+              "enabled": true
+            }
+        """.trimIndent()
+
+
+        mockMvc.sendPost("/api/web/analytics/project", json)
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+        val project = projectRepository.findAll().first()
+
+        json = """
+            {
+              "productNumber": 2,
+              "name": "second cro funnel",
+              "steps": [
+                {
+                  "eventName": "login",
+                  "stepNumber": 0,
+                  "stepConditions": [
+                    {
+                      "eventProperty": "hhh",
+                      "eventPropertyType": "NUMBER",
+                      "value": "122223",
+                      "negate": "true",
+                      "operator": "EQUAL"
+                    },
+                    {
+                      "eventProperty": "hhh",
+                      "eventPropertyType": "NUMBER",
+                      "value": "12223,4",
+                      "negate": "true",
+                      "operator": "NOT_BETWEEN"
+                    },
+                    {
+                      "eventProperty": "hhh",
+                      "eventPropertyType": "TEXT",
+                      "value": "1223",
+                      "negate": "true",
+                      "operator": "ENDS_WITH"
+                    }
+                  ]
+                },
+                {
+                  "eventName": "logout",
+                  "stepNumber": 1,
+                  "stepConditions": [
+                    {
+                      "eventProperty": "hhh",
+                      "eventPropertyType": "TEXT",
+                      "value": "123",
+                      "negate": "false",
+                      "operator": "GREATER_THAN_OR_EQUAL"
+                    }
+                  ]
+                }
+              ]
+            }
+        """.trimIndent()
+
+        mockMvc.sendPost("/api/web/analytics/funnel", json, project.id!!)
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(2))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps").isNotEmpty)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("login"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("logout"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions.size()").value(1))
+            .andReturn()
+
+        var result = repo.findAll().toList()
+        assert(result.size == 1)
+
+        json = """
+            {
+              "id":${result[0].id},
+              "productNumber": 6,
+              "name": "update ${result[0].name}",
+              "steps": [
+                {
+                  "eventName": "update login",
+                  "stepNumber": 0,
+                  "stepConditions": [
+                    {
+                      "eventProperty": "hhhwww",
+                      "eventPropertyType": "NUMBER",
+                      "value": "1222234444",
+                      "negate": "true",
+                      "operator": "EQUAL"
+                    },
+                    {
+                      "eventProperty": "hhhttt",
+                      "eventPropertyType": "NUMBER",
+                      "value": "12223,4666",
+                      "negate": "true",
+                      "operator": "NOT_BETWEEN"
+                    },
+                    {
+                      "eventProperty": "hhhuuuu",
+                      "eventPropertyType": "TEXT",
+                      "value": "1223888",
+                      "negate": "true",
+                      "operator": "ENDS_WITH"
+                    }
+                  ]
+                },
+                {
+                  "eventName": "updated logout",
+                  "stepNumber": 1,
+                  "stepConditions": [
+                    {
+                      "eventProperty": "hhhccc",
+                      "eventPropertyType": "TEXT",
+                      "value": "12345",
+                      "negate": "false",
+                      "operator": "GREATER_THAN_OR_EQUAL"
+                    }
+                  ]
+                }
+              ]
+            }
+        """.trimIndent()
+
+        mockMvc.sendPut("/api/web/analytics/funnel", json, project.id!!)
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("update ${result[0].name}"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(6))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(result[0].id))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps").isNotEmpty)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("update login"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("updated logout"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[0].eventProperty").value("hhhwww"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[0].value").value("1222234444"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[1].eventProperty").value("hhhttt"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[1].value").value("12223,4666"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[2].eventProperty").value("hhhuuuu"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[2].value").value("1223888"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions.size()").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions[0].eventProperty").value("hhhccc"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions[0].value").value("12345"))
+            .andReturn()
+
+        result = repo.findAll().toList()
+        assert(result.size == 1)
+    }
+
+    @Test
     fun `create and get one funnel`() {
         var json = """
             {
