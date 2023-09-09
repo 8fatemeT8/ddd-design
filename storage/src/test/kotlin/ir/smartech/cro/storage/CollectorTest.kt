@@ -1,10 +1,12 @@
 package ir.smartech.cro.storage
 
 import ir.smartech.cro.storage.common.BaseMockMVCTest
+import ir.smartech.cro.storage.config.WithMockUserDto
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
 import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
 import ir.smartech.cro.storage.data.postgres.repository.UserRepository
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -23,24 +25,27 @@ class CollectorTest(
         userRepository.deleteAll()
     }
 
-    @Test
-    fun ` test saving schema and then receive data also saving in kafka `() {
-        // save user
-        var json = """
+    @BeforeEach
+    fun getToken() {
+        val json = """
             {
+              "username": "intract_project_1",
+              "password": "111111",
               "name": "Intrack"
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/cro/user", json)
+        mockMvc.sendPost("/api/web/account/register", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
+        return
+    }
 
-        assert(userRepository.findAll().size == 1)
-
-
+    @Test
+    @WithMockUserDto(username = "intract_project_1", password = "111111")
+    fun ` test saving schema and then receive data also saving in kafka `() {
         // add user schema
-        json = """
+        var json = """
             {
               "data": {
                 "productId":"NUMBER",
@@ -194,6 +199,7 @@ class CollectorTest(
         if (kafkaMessage == null) assert(false)
         objectMapper.readValue(json, HashMap::class.java)
             ?.forEach { (k, v) ->
-                if (kafkaMessage?.get(k) != v?.toString()) assert(false) }
+                if (kafkaMessage?.get(k) != v?.toString()) assert(false)
+            }
     }
 }

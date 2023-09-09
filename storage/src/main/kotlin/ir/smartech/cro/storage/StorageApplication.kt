@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableScheduling
 @EnableJpaRepositories
 @SpringBootApplication
-class StorageApplication
+open class StorageApplication
 
 fun main(args: Array<String>) {
     runApplication<StorageApplication>(*args)

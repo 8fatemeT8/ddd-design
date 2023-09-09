@@ -28,8 +28,7 @@ import java.util.concurrent.Future
 @Import(TestConfig::class)
 @EmbeddedKafka(
     partitions = 1,
-    topics = [KafkaTopic.gatewayEmit],
-    bootstrapServersProperty = "spring.kafka.bootstrap-servers"
+    topics = [KafkaTopic.gatewayEmit]
 )
 @TestPropertySource(locations = ["classpath:application.yml"])
 open class BaseTest {

@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableKafka
-class CollectorConfig {
+open class CollectorConfig {
     @Bean
-    fun objectMapper(): ObjectMapper = ObjectMapper()
+    open fun objectMapper(): ObjectMapper = ObjectMapper()
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder? = BCryptPasswordEncoder()
+    open fun passwordEncoder(): PasswordEncoder? = BCryptPasswordEncoder()
 }

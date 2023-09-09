@@ -32,7 +32,6 @@ class User : UserDetails {
     }
 
     var topicName: String? = null
-        get() = "${name}_topic"
 
     @OneToOne
     var projectSchema: ProjectSchema? = null

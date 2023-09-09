@@ -14,4 +14,9 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: cro_jwt_secret
+  token:
+    validity: 288000

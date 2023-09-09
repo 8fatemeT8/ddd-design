@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = [StorageApplication::class], webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-class BaseMockMVCTest : BaseTest() {
+open class BaseMockMVCTest : BaseTest() {
 
     lateinit var mockMvc: MockMvc
 

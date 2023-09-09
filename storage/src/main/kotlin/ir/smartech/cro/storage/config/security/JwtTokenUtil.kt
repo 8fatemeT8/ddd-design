@@ -13,10 +13,10 @@ import java.util.function.Function
 @Component
 class JwtTokenUtil : Serializable {
     @Value("\${jwt.secret}")
-    private val secret: String? = null
+    val secret: String? = null
 
     @Value("\${jwt.token.validity}")
-    private val jwtTokenValidity: Long? = null
+    val jwtTokenValidity: Long? = null
 
     //retrieve username from jwt token
     fun getUsernameFromToken(token: String?): String {

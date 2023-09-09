@@ -16,8 +16,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <kotlin.version>1.8.22</kotlin.version>
-        <tomcat.version>9.0.1</tomcat.version>
+        <kotlin.version>1.9.10</kotlin.version>
     </properties>
 
     <dependencies>
@@ -58,6 +57,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.2.220</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>6.0.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -87,6 +92,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.6.0</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.hypersistence</groupId>
@@ -134,20 +140,61 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>${spring.boot.mainclass}</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
-                <configuration>
-                    <args>
-                        <arg>-Xjsr305=strict</arg>
-                        <arg>-jvm-target=17</arg>
-                    </args>
-                    <compilerPlugins>
-                        <plugin>spring</plugin>
-                    </compilerPlugins>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-Xjsr305=strict</arg>
+                                <arg>-Xjvm-default=all</arg>
+                                <arg>-Xjvm-target=17</arg>
+                            </args>
+                            <compilerPlugins>
+                                <plugin>spring</plugin>
+                            </compilerPlugins>
+                            <jvmTarget>17</jvmTarget>
+                            <javaParameters>true</javaParameters>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-Xjsr305=strict</arg>
+                                <arg>-Xjvm-default=all</arg>
+                                <arg>-Xjvm-target=17</arg>
+                            </args>
+                            <compilerPlugins>
+                                <plugin>spring</plugin>
+                            </compilerPlugins>
+                            <jvmTarget>17</jvmTarget>
+                            <javaParameters>true</javaParameters>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>

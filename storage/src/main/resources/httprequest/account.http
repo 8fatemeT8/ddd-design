@@ -1,9 +1,9 @@
-POST http://localhost:8081/api/web/account/login
+POST http://cro-stage-1:8081/api/web/account/login
 content-Type: application/json
 
 {
-  "username": "adtrace_1",
-  "password": "1111"
+  "username": "intrack_3",
+  "password": "111111"
 }
 
 ###
@@ -11,7 +11,8 @@ POST http://localhost:8081/api/web/account/register
 content-Type: application/json
 
 {
-  "username": "adtrace_project_1",
+  "username": "intrack_3",
   "password": "111111",
-  "name": "Adtrace"
+  "name": "Intrack_3",
+  "topicName": "intrack-events-queue-test-0"
 }

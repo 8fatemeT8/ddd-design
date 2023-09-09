@@ -26,7 +26,8 @@ class AccountController(
 
     @PostMapping("/register")
     fun register(@RequestBody entity: User): ResponseEntity<JwtResponseDto> {
+        val password = entity.password
         val saved = userService.upsert(entity)
-        return ResponseEntity.ok(authenticationService.authenticate(entity.username, entity.password))
+        return ResponseEntity.ok(authenticationService.authenticate(entity.username, password))
     }
 }

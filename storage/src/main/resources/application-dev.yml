@@ -16,13 +16,13 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8081
 #spring.kafka.consumer.enable-auto-commit=true
 
 jwt:
-  secret: 3lkj90i3rkn,OKLJB!){@lknasdf
+  secret: 3lkj90i3rkn$OKLJB!){@lknasdf
   token:
-    validity: 2880000000
+    validity: 2880000

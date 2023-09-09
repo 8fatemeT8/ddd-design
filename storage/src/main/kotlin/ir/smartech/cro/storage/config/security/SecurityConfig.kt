@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+open class SecurityConfig {
 
     @Autowired
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint? = null
@@ -34,7 +34,7 @@ class SecurityConfig {
 
 
     @Bean
-    fun authenticationProvider(): AuthenticationProvider? {
+    open fun authenticationProvider(): AuthenticationProvider? {
         val authProvider = DaoAuthenticationProvider()
         authProvider.setUserDetailsService(jwtUserDetailsService)
         authProvider.setPasswordEncoder(passwordEncoder)
@@ -42,12 +42,12 @@ class SecurityConfig {
     }
 
     @Bean
-    fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager? {
+    open fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager? {
         return authConfig.authenticationManager
     }
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain? {
+    open fun filterChain(http: HttpSecurity): SecurityFilterChain? {
         http.csrf { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers("/api/web/account/**").permitAll().anyRequest().authenticated()
