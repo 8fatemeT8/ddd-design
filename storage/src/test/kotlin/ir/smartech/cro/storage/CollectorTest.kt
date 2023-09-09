@@ -2,8 +2,8 @@ package ir.smartech.cro.storage
 
 import ir.smartech.cro.storage.common.BaseMockMVCTest
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
-import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
-import ir.smartech.cro.storage.data.postgres.repository.UserRepository
+import ir.smartech.cro.storage.data.postgres.repository.ClientSchemaRepository
+import ir.smartech.cro.storage.data.postgres.repository.ClientRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,35 +11,35 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 class CollectorTest(
     @Autowired
-    private val userRepository: UserRepository,
+    private val clientRepository: ClientRepository,
     @Autowired
-    private val projectSchemaRepository: ProjectSchemaRepository,
+    private val clientSchemaRepository: ClientSchemaRepository,
 ) : BaseMockMVCTest() {
 
 
     @AfterEach
     fun afterTest() {
-        projectSchemaRepository.deleteAll()
-        userRepository.deleteAll()
+        clientSchemaRepository.deleteAll()
+        clientRepository.deleteAll()
     }
 
     @Test
     fun ` test saving schema and then receive data also saving in kafka `() {
-        // save user
+        // save client
         var json = """
             {
               "name": "Intrack"
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/cro/user", json)
+        mockMvc.sendPost("/api/web/cro/client", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        assert(userRepository.findAll().size == 1)
+        assert(clientRepository.findAll().size == 1)
 
 
-        // add user schema
+        // add Client schema
         json = """
             {
               "data": {
@@ -52,11 +52,11 @@ class CollectorTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/cro/user/schema", json)
+        mockMvc.sendPost("/api/web/cro/client/schema", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        assert(projectSchemaRepository.findAll().size == 1)
+        assert(clientSchemaRepository.findAll().size == 1)
 
 
         // receive api

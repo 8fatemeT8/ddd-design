@@ -3,7 +3,7 @@ content-Type: application/json
 
 {
   "id": 1,
-  "productId": 2,
+  "productId": 200,
   "appVersion": "{\"hi\":\"aaa\"}",
   "deviceType": "11"
 }

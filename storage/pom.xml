@@ -16,10 +16,9 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <kotlin.version>1.9.0</kotlin.version>
+        <kotlin.version>1.9.10</kotlin.version>
         <spring.boot.version>3.1.2</spring.boot.version>
         <spring.kafka>3.0.9</spring.kafka>
-        <start-class>ir.smartech.cro.storage.StorageApplication</start-class>
     </properties>
 
     <dependencies>

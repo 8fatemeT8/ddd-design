@@ -3,11 +3,11 @@ package ir.smartech.cro.storage.data.postgres.entity
 import jakarta.persistence.*
 
 /**
- * this entity save user (client) data
+ * this entity save Client authentication data such as name, username, password, etc.
  */
 @Entity
-@Table(name = "users")
-class User {
+@Table(name = "clients")
+class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,5 @@ class User {
         get() = "${name}_topic"
 
     @OneToOne
-    var projectSchema: ProjectSchema? = null
+    var clientSchema: ClientSchema? = null
 }
