@@ -18,7 +18,7 @@ class JpaFunnel : BaseEntity() {
     @JoinColumn(name = "project_id")
     var project: JpaProject? = null
 
-    @OneToMany(cascade = [CascadeType.PERSIST, CascadeType.REFRESH], fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "funnel_id")
     @Fetch(FetchMode.SUBSELECT)
     @AuditMappedBy(mappedBy = "funnel")

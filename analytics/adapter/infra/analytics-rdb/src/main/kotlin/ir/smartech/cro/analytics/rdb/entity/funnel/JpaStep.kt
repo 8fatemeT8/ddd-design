@@ -12,7 +12,7 @@ import org.hibernate.envers.Audited
 @Table(name = "funnel_steps")
 class JpaStep : BaseEntity() {
 
-    @OneToMany(cascade = [CascadeType.PERSIST , CascadeType.MERGE], orphanRemoval = true)
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "funnel_step_id")
     @AuditMappedBy(mappedBy = "funnelStep")
