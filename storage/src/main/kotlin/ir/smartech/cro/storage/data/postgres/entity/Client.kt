@@ -1,12 +1,13 @@
 package ir.smartech.cro.storage.data.postgres.entity
 
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 
+/**
+ * this entity save Client authentication data such as name, username, password, etc.
+ */
 @Entity
-@Table(name = "users")
-class User : UserDetails {
+@Table(name = "clients")
+class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +35,8 @@ class User : UserDetails {
     var topicName: String? = null
 
     @OneToOne
-    var projectSchema: ProjectSchema? = null
+    var clientSchema: ClientSchema? = null
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
        return arrayListOf()
     }

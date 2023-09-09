@@ -1,0 +1,23 @@
+POST http://localhost:8081/api/web/cro/client
+content-Type: application/json
+
+{
+  "name": "Adtrace"
+}
+
+###
+GET http://localhost:8081/api/web/cro/client
+
+###
+GET http://localhost:8081/api/web/cro/client/1
+
+###
+POST http://localhost:8081/api/web/cro/client/schema
+content-Type: application/json
+
+{
+  "data": {
+    "appVersion": "STRING",
+    "deviceType": "STRING"
+  }
+}

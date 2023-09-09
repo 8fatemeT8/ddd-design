@@ -3,8 +3,8 @@ package ir.smartech.cro.storage
 import ir.smartech.cro.storage.common.BaseMockMVCTest
 import ir.smartech.cro.storage.config.WithMockUserDto
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
-import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
-import ir.smartech.cro.storage.data.postgres.repository.UserRepository
+import ir.smartech.cro.storage.data.postgres.repository.ClientSchemaRepository
+import ir.smartech.cro.storage.data.postgres.repository.ClientRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -13,16 +13,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 class CollectorTest(
     @Autowired
-    private val userRepository: UserRepository,
+    private val clientRepository: ClientRepository,
     @Autowired
-    private val projectSchemaRepository: ProjectSchemaRepository,
+    private val clientSchemaRepository: ClientSchemaRepository,
 ) : BaseMockMVCTest() {
 
 
     @AfterEach
     fun afterTest() {
-        projectSchemaRepository.deleteAll()
-        userRepository.deleteAll()
+        clientSchemaRepository.deleteAll()
+        clientRepository.deleteAll()
     }
 
     @BeforeEach
@@ -44,7 +44,7 @@ class CollectorTest(
     @Test
     @WithMockUserDto(username = "intract_project_1", password = "111111")
     fun ` test saving schema and then receive data also saving in kafka `() {
-        // add user schema
+        // add Client schema
         var json = """
             {
               "data": {
@@ -57,11 +57,11 @@ class CollectorTest(
             }
         """.trimIndent()
 
-        mockMvc.sendPost("/api/web/cro/user/schema", json)
+        mockMvc.sendPost("/api/web/cro/client/schema", json)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        assert(projectSchemaRepository.findAll().size == 1)
+        assert(clientSchemaRepository.findAll().size == 1)
 
 
         // receive api
@@ -139,7 +139,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        var kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        var kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -155,7 +155,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -172,7 +172,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
         json = """
@@ -189,7 +189,7 @@ class CollectorTest(
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        kafkaMessage = getSingleRecord(KafkaTopic.gatewayEmit).value() as? HashMap<String?, String?>
+        kafkaMessage = getSingleRecord(KafkaTopic.COLLECTOR_EMIT).value() as? HashMap<String?, String?>
         validateKafkaMessage(json, kafkaMessage)
 
 

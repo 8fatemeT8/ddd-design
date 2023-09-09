@@ -6,24 +6,35 @@ import ir.smartech.cro.storage.config.kafka.KafkaPublisher
 import ir.smartech.cro.storage.config.kafka.KafkaTopic
 import ir.smartech.cro.storage.config.security.JwtUserDetailsService
 import ir.smartech.cro.storage.data.postgres.ReturnType
+import ir.smartech.cro.storage.data.postgres.repository.ClientSchemaRepository
+import ir.smartech.cro.storage.data.postgres.repository.ClientRepository
 import ir.smartech.cro.storage.data.postgres.repository.ProjectSchemaRepository
 import org.springframework.stereotype.Service
 import java.lang.NumberFormatException
+import java.util.*
 
+/**
+ * this class use for implementing Collector logic (for instance: validate data or publish data to kafka)
+ */
 @Service
 class CollectorService(
     private val kafkaPublisher: KafkaPublisher<String, Any?>,
     private val jwtUserDetailsService: JwtUserDetailsService,
-    private val projectSchemaRepository: ProjectSchemaRepository,
+    private val clientRepository: ClientRepository,
+    private val clientSchemaRepository: ClientSchemaRepository,
     private val objectMapper: ObjectMapper
 ) {
 
+    /**
+     * this method validates input based on currentClient's schema
+     * just validates required fields and typeMisMatchException
+     */
     fun validate(dto: HashMap<String?, String?>): List<String> {
         val result = arrayListOf<String>()
         checkRequiredValidation(dto, result)
         if (result.isNotEmpty()) return result
-        val user = jwtUserDetailsService.getCurrentUser() ?: return arrayListOf("current user not found")
-        val schema = projectSchemaRepository.findByUserId(user.id!!).data
+        val clientId = jwtUserDetailsService.getCurrentUser() ?: return arrayListOf("current client not found")
+        val schema = clientSchemaRepository.findByClientId(clientId!!).data
         dto.forEach { (k, v) ->
             if (!arrayListOf("id", "productId").contains(k))
                 when (schema?.get(k)) {
@@ -68,6 +79,9 @@ class CollectorService(
         return businessId
     }
 
+    /**
+     * write message to currentClient's kafkaTopic
+     */
     fun writeToKafka(message: HashMap<String?, String?>) {
         val user = jwtUserDetailsService.getCurrentUser() ?: return
         kafkaPublisher.publish(arrayListOf(message), user.topicName ?: KafkaTopic.gatewayEmit)
