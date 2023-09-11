@@ -4,6 +4,9 @@ import ir.smartech.cro.analytics.domain.common.api.enums.Operator
 import ir.smartech.cro.analytics.domain.common.api.enums.PropertyType
 import jakarta.persistence.*
 
+/**
+ * this class must be the parent of all condition classes
+ */
 @MappedSuperclass
 open class JpaBaseCondition : BaseEntity() {
 

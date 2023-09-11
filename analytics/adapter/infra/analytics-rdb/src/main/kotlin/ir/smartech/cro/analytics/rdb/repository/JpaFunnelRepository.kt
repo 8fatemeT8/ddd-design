@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface JpaFunnelRepository : JpaRepository<JpaFunnel, Int> {
-    fun findAllByProjectId(projectId: Int): List<JpaFunnel>
-    fun findByIdAndProjectId(id: Int, projectId: Int): JpaFunnel?
-    fun findAllByNameLikeAndProjectId(name: String, projectId: Int, pageable: Pageable): Page<JpaFunnel>
-    fun existsByIdAndProjectId(id: Int, projectId: Int): Boolean
+    fun findAllByClientId(clientId: Int): List<JpaFunnel>
+    fun findByIdAndClientId(id: Int, clientId: Int): JpaFunnel?
+    fun findAllByNameLikeAndClientId(name: String, clientId: Int, pageable: Pageable): Page<JpaFunnel>
+    fun existsByIdAndClientId(id: Int, clientId: Int): Boolean
 }
