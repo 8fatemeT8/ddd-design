@@ -9,10 +9,13 @@ spring:
     password: cro_analytics_password
     driver-class-name: org.postgresql.Driver
   jpa:
+    database: default
     hibernate:
       ddl-auto: update # TODO: add liquibase for database migrations
+    defer-datasource-initialization: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
 server:
   port: 8080

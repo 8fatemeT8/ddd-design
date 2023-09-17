@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: Analytics API
+  profiles:
+    active: dev,default
+  secondDatasource:
+    url: jdbc:clickhouse://cro-stage-1:8123
+    username: crouser
+    password: crostage

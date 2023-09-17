@@ -6,11 +6,16 @@ spring:
     username: postgres
     password: 1111
     driver-class-name: org.postgresql.Driver
+  secondDatasource:
+    url: jdbc:clickhouse://cro-stage-1:8123
+    username: crouser
+    password: crostage
+    driver-class-name: cc.blynk.clickhouse.ClickHouseDriver
   jpa:
     hibernate:
       ddl-auto: update # TODO: add liquibase for database migrations
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8082

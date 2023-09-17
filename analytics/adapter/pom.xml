@@ -16,6 +16,7 @@
         <module>composition-root</module>
         <module>application/analytics-api</module>
         <module>infra/analytics-rdb</module>
+        <module>infra/analytics-columnar</module>
     </modules>
 
     <dependencies>

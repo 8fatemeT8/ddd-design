@@ -4,46 +4,45 @@ Content-Type: application/json
 Client-id: 2
 
 {
-  "productNumber": 2,
+  "productNumber": 12,
   "name": "first cro funnel",
   "steps": [
     {
-      "eventName": "login",
+      "eventName": "search_pageview",
       "stepNumber": 0,
       "stepConditions": [
         {
-          "eventProperty": "hhh",
-          "eventPropertyType": "NUMBER",
-          "value": "122223",
+          "eventProperty": "string96",
+          "eventPropertyType": "TEXT",
+          "value": "iOS",
           "negate": "true",
           "operator": "EQUAL"
-        },
-        {
-          "eventProperty": "hhh",
-          "eventPropertyType": "NUMBER",
-          "value": "12223,4",
-          "negate": "true",
-          "operator": "NOT_BETWEEN"
-        },
-        {
-          "eventProperty": "hhh",
-          "eventPropertyType": "TEXT",
-          "value": "1223",
-          "negate": "true",
-          "operator": "ENDS_WITH"
         }
       ]
     },
     {
-      "eventName": "logout",
+      "eventName": "category_pageview",
       "stepNumber": 1,
       "stepConditions": [
         {
-          "eventProperty": "hhh",
+          "eventProperty": "string98",
           "eventPropertyType": "TEXT",
-          "value": "123",
+          "value": "Chrome",
           "negate": "false",
-          "operator": "GREATER_THAN_OR_EQUAL"
+          "operator": "EQUAL"
+        }
+      ]
+    },
+    {
+      "eventName": "product_detail_pageview",
+      "stepNumber": 2,
+      "stepConditions": [
+        {
+          "eventProperty": "string100",
+          "eventPropertyType": "TEXT",
+          "value": "E9",
+          "negate": "false",
+          "operator": "CONTAINS"
         }
       ]
     }
@@ -115,7 +114,7 @@ Client-id: 2
 ###
 
 #Get By Id
-GET http://localhost:8082/api/web/analytics/funnel/60
+GET http://localhost:8082/api/web/analytics/funnel/2
 Content-Type: application/json
 Client-id: 2
 
@@ -140,6 +139,33 @@ Client-id: 2
 ###
 
 #Query By Id
-GET http://localhost:8082/api/web/analytics/funnel/59/query
+GET http://localhost:8082/api/web/analytics/funnel/13/query
+Content-Type: application/json
+Client-id: 2
+
+{
+  "completionTime": 1000000,
+  "startDate": "",
+  "endDate": ""
+}
+
+###
+
+#SplitBy Query
+GET http://localhost:8082/api/web/analytics/funnel/13/query-split
+Content-Type: application/json
+Client-id: 2
+
+{
+  "completionTime": 100,
+  "startDate": "",
+  "endDate": "",
+  "splitBy": "string96"
+}
+
+###
+
+#Segment Query
+GET http://localhost:8082/api/web/analytics/funnel/2/query/segment/search-pageview/product-detail-pageview
 Content-Type: application/json
 Client-id: 2

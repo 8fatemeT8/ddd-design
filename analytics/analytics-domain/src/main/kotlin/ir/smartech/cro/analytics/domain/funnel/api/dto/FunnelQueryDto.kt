@@ -1,12 +1,5 @@
 package ir.smartech.cro.analytics.domain.funnel.api.dto
 
-/**
- * this class return the required fields in funnel query
- */
-class FunnelQueryDto {
-    var clientId: Int? = null
-
-    var productNumber: Int? = null
-
-    var steps: List<StepQueryDto?> = arrayListOf()
-}
+data class FunnelQueryDto(var level: Long? = null, var result: Long? = null, var splitValue: String? = null)
+data class FunnelQueryResponse(var stepNumber: Long? = null, var count: Long? = 0, var splitValue: String? = null)
+data class SegmentFunnelQueryDto(var userIds: List<Long>? = null)
