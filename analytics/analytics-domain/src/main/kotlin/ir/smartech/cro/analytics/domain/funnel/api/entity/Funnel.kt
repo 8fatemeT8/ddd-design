@@ -41,15 +41,16 @@ fun Funnel.toQueryString(completionTime: Long, startTimestamp: Long?, endTimesta
 /**
  * this method does something like Funnel.toQueryString() and the different is in splitBy input (set groupBy on data)
  */
-fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?) = run {
-    val funnelSteps = getStepQueryDto()
-    FunnelQueryBuilder
-        .steps(funnelSteps)
-        .productNumber(productNumber!!)
-        .splitBy(splitBy)
-        .completionTime(completionTime)
-        .build()
-}
+fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?) =
+    run {
+        val funnelSteps = getStepQueryDto()
+        FunnelQueryBuilder
+            .steps(funnelSteps)
+            .productNumber(productNumber!!)
+            .splitBy(splitBy)
+            .completionTime(completionTime)
+            .build()
+    }
 
 /**
  * this method create segmentQuery, it's the dropped users between firstStep and secondStep
@@ -57,7 +58,7 @@ fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTi
 fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step>, startTimestamp: Long?, endTimestamp: Long?) = run {
     val funnelSteps = getStepQueryDto(steps)
     FunnelQueryBuilder
-        .steps(funnelSteps)
+        .steps(funnelSteps, true)
         .productNumber(productNumber!!)
         .completionTime(completionTime)
         .build()

@@ -54,7 +54,7 @@ class FunnelService(
         id: Int, clientId: Int, completionTime: Long, startDate: Date?, endDate: Date?
     ): List<FunnelQueryResponse> {
         val funnel = findByIdAndClientId(id, clientId)
-        val response = clickhouseRepository.getFunnelQueryById(funnel!!, completionTime)
+        val response = clickhouseRepository.getFunnelQueryById(funnel!!, completionTime, startDate?.time, endDate?.time)
         val result = funnel.steps.map {
             FunnelQueryResponse(
                 it?.stepNumber,
@@ -68,7 +68,8 @@ class FunnelService(
         id: Int, clientId: Int, completionTime: Long, splitBy: String, startDate: Date?, endDate: Date?
     ): List<FunnelQueryResponse> {
         val funnel = findByIdAndClientId(id, clientId)
-        val response = clickhouseRepository.getFunnelSplitBy(funnel!!, completionTime, splitBy)
+        val response =
+            clickhouseRepository.getFunnelSplitBy(funnel!!, completionTime, splitBy, startDate?.time, endDate?.time)
         val groupBy = response.groupBy { it2 -> it2.splitValue }
 
         return groupBy.entries.map {
@@ -89,6 +90,6 @@ class FunnelService(
         id: Int, clientId: Int, completionTime: Long, steps: List<Step>, startDate: Date?, endDate: Date?
     ): List<SegmentFunnelQueryDto> {
         val funnel = findByIdAndClientId(id, clientId)
-        return clickhouseRepository.getFunnelSegment(funnel!!, completionTime, steps)
+        return clickhouseRepository.getFunnelSegment(funnel!!, completionTime, steps, startDate?.time, endDate?.time)
     }
 }

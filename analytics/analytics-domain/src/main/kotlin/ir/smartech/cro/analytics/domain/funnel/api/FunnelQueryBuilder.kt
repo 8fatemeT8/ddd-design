@@ -11,8 +11,7 @@ class FunnelQueryBuilder private constructor() {
         private var splitBy: String? = null
         private var startTimestamp: Long? = null
         private var endTimestamp: Long? = null
-//        private var segmentFirstSteStep: String? = null
-//        private var segmentSecondSteStep: String? = null
+        private var segment: Boolean? = null
 
         fun setTimeFrame(startTimestamp: Long?, endTimestamp: Long?): Companion {
             this.startTimestamp = startTimestamp
@@ -20,8 +19,9 @@ class FunnelQueryBuilder private constructor() {
             return this
         }
 
-        fun steps(dto: List<StepQueryDto>): Companion {
+        fun steps(dto: List<StepQueryDto>, segment: Boolean? = null): Companion {
             if (steps == null) steps = dto
+            this.segment = segment
             return this
         }
 
@@ -35,12 +35,6 @@ class FunnelQueryBuilder private constructor() {
             return this
         }
 
-//        fun segment(firstStep: String, secondSte: String): Companion {
-//            segmentFirstSteStep = firstStep
-//            segmentSecondSteStep = secondSte
-//            return this
-//        }
-
         fun completionTime(duration: Long): Companion {
             completionTime = duration
             return this
@@ -48,7 +42,7 @@ class FunnelQueryBuilder private constructor() {
 
         fun build(): String {
             val result = """
-                SELECT level, count() as result ${splitBy?.let { ", $it" } ?: ""}
+                SELECT ${if (segment == true) "user_id" else " level, count() as result ${splitBy?.let { ", $it" } ?: ""}"}
                 FROM (
                          SELECT user_id, ${splitBy?.let { "$it ," } ?: ""}
                                 windowFunnel($completionTime, 'strict_order')(timestamp, ${getSteps()}) AS level
@@ -58,7 +52,7 @@ class FunnelQueryBuilder private constructor() {
 
                          group by user_id ${splitBy?.let { ", $it" } ?: ""}
                          )
-                GROUP BY level ${splitBy?.let { ", $it" } ?: ""}
+                ${if (segment == true) "where level = 1" else "GROUP BY level ${splitBy?.let { ", $it" } ?: ""}"}
                 ORDER BY level ASC;
             """.trimIndent()
 
@@ -67,8 +61,8 @@ class FunnelQueryBuilder private constructor() {
             return result
         }
 
-        private fun getTimeFrame() = """${if(startTimestamp != null) "AND $startTimestamp <= timestamp" else ""}
-            | ${if(endTimestamp != null) "AND $endTimestamp >= timestamp" else ""}""".trimMargin()
+        private fun getTimeFrame() = """${if (startTimestamp != null) "AND $startTimestamp <= timestamp" else ""}
+            | ${if (endTimestamp != null) "AND $endTimestamp >= timestamp" else ""}""".trimMargin()
 
         private fun getSteps() = steps?.sortedBy { it?.stepNumber }?.map { it?.getStepQuery() }?.joinToString(",")
 
