@@ -1,10 +1,12 @@
 package ir.smartech.cro.analytics.domain.funnel.api
 
 import ir.smartech.cro.analytics.domain.common.api.BaseService
+import ir.smartech.cro.analytics.domain.common.api.utils.ErrorCodes
+import ir.smartech.cro.analytics.domain.common.api.utils.ResponseException
+import ir.smartech.cro.analytics.domain.funnel.api.dto.FunnelQueryDto
 import ir.smartech.cro.analytics.domain.funnel.api.dto.FunnelQueryResponse
 import ir.smartech.cro.analytics.domain.funnel.api.dto.SegmentFunnelQueryDto
 import ir.smartech.cro.analytics.domain.funnel.api.entity.Funnel
-import ir.smartech.cro.analytics.domain.funnel.api.entity.Step
 import ir.smartech.cro.analytics.domain.funnel.spi.ClickhouseRepository
 import ir.smartech.cro.analytics.domain.funnel.spi.FunnelRepository
 import java.util.Date
@@ -54,7 +56,7 @@ class FunnelService(
         id: Int, clientId: Int, completionTime: Long, startDate: Date?, endDate: Date?
     ): List<FunnelQueryResponse> {
         val funnel = findByIdAndClientId(id, clientId)
-        val response = clickhouseRepository.getFunnelQueryById(funnel!!, completionTime)
+        val response = clickhouseRepository.getFunnelQueryById(funnel!!, completionTime, startDate?.time, endDate?.time)
         val result = funnel.steps.map {
             FunnelQueryResponse(
                 it?.stepNumber,
@@ -68,12 +70,15 @@ class FunnelService(
         id: Int, clientId: Int, completionTime: Long, splitBy: String, startDate: Date?, endDate: Date?
     ): List<FunnelQueryResponse> {
         val funnel = findByIdAndClientId(id, clientId)
-        val response = clickhouseRepository.getFunnelSplitBy(funnel!!, completionTime, splitBy)
+        val response =
+            clickhouseRepository.getFunnelSplitBy(funnel!!, completionTime, splitBy, startDate?.time, endDate?.time)
         val groupBy = response.groupBy { it2 -> it2.splitValue }
 
         return groupBy.entries.map {
             if (it.value.size != funnel.steps.size) {
-                // TODO add missing FunnelQueryDto
+                val missing = funnel.steps.map { it2 -> it2?.stepNumber }
+                    .filterNot { it2 -> it.value.any { it3 -> it3.level == it2 } }
+                (it.value as ArrayList).addAll(missing.map { it2 -> FunnelQueryDto(it2, 0, it.key) })
             }
             it.value.map { it2 ->
                 FunnelQueryResponse(
@@ -86,9 +91,11 @@ class FunnelService(
     }
 
     fun getFunnelQuerySegment(
-        id: Int, clientId: Int, completionTime: Long, steps: List<Step>, startDate: Date?, endDate: Date?
-    ): List<SegmentFunnelQueryDto> {
+        id: Int, clientId: Int, completionTime: Long, stepNumbers: List<Long>, startDate: Date?, endDate: Date?
+    ): SegmentFunnelQueryDto {
         val funnel = findByIdAndClientId(id, clientId)
-        return clickhouseRepository.getFunnelSegment(funnel!!, completionTime, steps)
+        val steps = funnel!!.steps.filter { stepNumbers.contains(it?.stepNumber) }.sortedBy { it?.stepNumber }
+        if (steps.isEmpty()) throw ResponseException(ErrorCodes.NOT_FOUND, "steps not found")
+        return clickhouseRepository.getFunnelSegment(funnel, completionTime, steps, startDate?.time, endDate?.time)
     }
 }

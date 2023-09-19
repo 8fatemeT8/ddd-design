@@ -2,7 +2,6 @@ package ir.smartech.cro.analytics.api.controller
 
 import ir.smartech.cro.analytics.api.dto.funnel.*
 import ir.smartech.cro.analytics.api.mapper.ApiFunnelMapper
-import ir.smartech.cro.analytics.api.mapper.MapperInline
 import ir.smartech.cro.analytics.domain.common.api.utils.ErrorCodes
 import ir.smartech.cro.analytics.domain.common.api.utils.ResponseException
 import ir.smartech.cro.analytics.domain.funnel.api.FunnelService
@@ -11,6 +10,7 @@ import ir.smartech.cro.analytics.domain.funnel.api.entity.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.*
 class FunnelController(
     private val funnelService: FunnelService,
     private val apiFunnelMapper: ApiFunnelMapper,
-    private val clientService: ClientService,
-    private val mapperInline: MapperInline
+    private val clientService: ClientService
 ) :
     BaseController<Funnel, FunnelCreateDto, FunnelEditDto, FunnelViewDto, FunnelListDto, ApiFunnelMapper, FunnelService>(
         apiFunnelMapper,
@@ -68,9 +67,10 @@ class FunnelController(
         @RequestHeader("Client-id") clientId: Int,
         @RequestBody dto: FunnelQueryRequest
     ): ResponseEntity<*> {
-        return ResponseEntity.ok(
-            funnelService.getFunnelQuery(id!!, clientId, dto.completionTime!!, dto.startDate, dto.endDate)
-        )
+        if (dto.completionTime == null) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body("completionTime is the mandatory field")
+        val response = funnelService.getFunnelQuery(id!!, clientId, dto.completionTime!!, dto.startDate, dto.endDate)
+        return ResponseEntity.ok(response)
     }
 
 
@@ -83,28 +83,29 @@ class FunnelController(
         @RequestHeader("Client-id") clientId: Int,
         @RequestBody dto: FunnelQueryRequest
     ): ResponseEntity<*> {
-        return ResponseEntity.ok(
-            funnelService.getFunnelQuerySplitBy(
-                id!!, clientId, dto.completionTime!!, dto.splitBy!!, dto.startDate, dto.endDate
-            )
+        if (dto.completionTime == null || dto.splitBy == null) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body("please fill the mandatory fields")
+        val response = funnelService.getFunnelQuerySplitBy(
+            id!!, clientId, dto.completionTime!!, dto.splitBy!!, dto.startDate, dto.endDate
         )
+        return ResponseEntity.ok(response)
     }
 
 
     /**
      * returns list of userId who dropped from firstStep and secondStep
      */
-    @GetMapping("/{id}/query/segment")
+    @GetMapping("/{id}/query-segment")
     fun segmentQuery(
         @PathVariable("id") id: Int?,
         @RequestHeader("Client-id") clientId: Int,
         @RequestBody dto: FunnelQueryRequest
     ): ResponseEntity<*> {
-        return ResponseEntity.ok(
-            funnelService.getFunnelQuerySegment(
-                id!!, clientId, dto.completionTime!!, dto.steps!!.map { mapperInline.map(it) },
-                dto.startDate, dto.endDate
-            )
+        if (dto.completionTime == null || dto.stepNumbers == null) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+            .body("please fill the mandatory fields")
+        val response = funnelService.getFunnelQuerySegment(
+            id!!, clientId, dto.completionTime!!, dto.stepNumbers!!, dto.startDate, dto.endDate
         )
+        return ResponseEntity.ok(response)
     }
 }

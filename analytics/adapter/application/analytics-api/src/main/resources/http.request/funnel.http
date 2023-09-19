@@ -157,7 +157,7 @@ Content-Type: application/json
 Client-id: 2
 
 {
-  "completionTime": 100,
+  "completionTime": 1000000,
   "startDate": "",
   "endDate": "",
   "splitBy": "string96"
@@ -166,6 +166,13 @@ Client-id: 2
 ###
 
 #Segment Query
-GET http://localhost:8082/api/web/analytics/funnel/2/query/segment/search-pageview/product-detail-pageview
+GET http://localhost:8082/api/web/analytics/funnel/13/query-segment
 Content-Type: application/json
 Client-id: 2
+
+{
+  "completionTime": 100,
+  "startDate": "",
+  "endDate": "",
+  "stepNumbers": [1,2]
+}

@@ -41,34 +41,37 @@ fun Funnel.toQueryString(completionTime: Long, startTimestamp: Long?, endTimesta
 /**
  * this method does something like Funnel.toQueryString() and the different is in splitBy input (set groupBy on data)
  */
-fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?) = run {
-    val funnelSteps = getStepQueryDto()
-    FunnelQueryBuilder
-        .steps(funnelSteps)
-        .productNumber(productNumber!!)
-        .splitBy(splitBy)
-        .completionTime(completionTime)
-        .build()
-}
+fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?) =
+    run {
+        val funnelSteps = getStepQueryDto()
+        FunnelQueryBuilder
+            .steps(funnelSteps)
+            .productNumber(productNumber!!)
+            .splitBy(splitBy)
+            .completionTime(completionTime)
+            .setTimeFrame(startTimestamp, endTimestamp)
+            .build()
+    }
 
 /**
  * this method create segmentQuery, it's the dropped users between firstStep and secondStep
  */
-fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step>, startTimestamp: Long?, endTimestamp: Long?) = run {
+fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step?>, startTimestamp: Long?, endTimestamp: Long?) = run {
     val funnelSteps = getStepQueryDto(steps)
     FunnelQueryBuilder
-        .steps(funnelSteps)
+        .steps(funnelSteps, true)
         .productNumber(productNumber!!)
         .completionTime(completionTime)
+        .setTimeFrame(startTimestamp, endTimestamp)
         .build()
 }
 
-private fun Funnel.getStepQueryDto(input: List<Step>? = null) =
-    input?.sortedBy { it.stepNumber }?.map {
+private fun Funnel.getStepQueryDto(input: List<Step?>? = null) =
+    input?.sortedBy { it?.stepNumber }?.map {
         StepQueryDto().apply {
-            stepNumber = it.stepNumber
-            eventName = it.eventName
-            conditions = it.stepConditions?.map { it2 ->
+            stepNumber = it?.stepNumber
+            eventName = it?.eventName
+            conditions = it?.stepConditions?.map { it2 ->
                 it2.operator?.parser(it2.value)?.apply {
                     eventProperty = it2.eventProperty
                     operator = it2.operator

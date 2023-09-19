@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component
 @Component
 class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) : ClickhouseRepository {
 
-    override fun getFunnelQueryById(funnel: Funnel, completionTime: Long, startTimestamp: Long?, endTimestamp: Long?): List<FunnelQueryDto> {
+    override fun getFunnelQueryById(
+        funnel: Funnel, completionTime: Long, startTimestamp: Long?, endTimestamp: Long?
+    ): List<FunnelQueryDto> {
         val statement = dataSource.connection.createStatement()
         val queryString = funnel.toQueryString(completionTime, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
@@ -26,7 +28,9 @@ class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) 
         return result
     }
 
-    override fun getFunnelSplitBy(funnel: Funnel, completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?): List<FunnelQueryDto> {
+    override fun getFunnelSplitBy(
+        funnel: Funnel, completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?
+    ): List<FunnelQueryDto> {
         val statement = dataSource.connection.createStatement()
         val queryString = funnel.toQueryStringWithSplit(completionTime, splitBy, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
@@ -45,16 +49,15 @@ class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) 
 
 
     override fun getFunnelSegment(
-        funnel: Funnel, completionTime: Long, steps: List<Step>, startTimestamp: Long?, endTimestamp: Long?
-    ): List<SegmentFunnelQueryDto> {
+        funnel: Funnel, completionTime: Long, steps: List<Step?>, startTimestamp: Long?, endTimestamp: Long?
+    ): SegmentFunnelQueryDto {
         val statement = dataSource.connection.createStatement()
         val queryString = funnel.toSegmentQuery(completionTime, steps, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
-        val result = arrayListOf<SegmentFunnelQueryDto>()
-        while (resultSet.next()) {
-            result.add(SegmentFunnelQueryDto().apply {
-                userIds = listOf(resultSet.getArray(1).array).map { it as Long }
-            })
+        val result = SegmentFunnelQueryDto().apply {
+            while (resultSet.next()) {
+                userIds.add(resultSet.getString(1))
+            }
         }
         resultSet.close()
         statement.close()
