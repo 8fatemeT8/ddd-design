@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component
 @Component
 class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) : ClickhouseRepository {
 
-    override fun getFunnelQueryById(funnel: Funnel, completionTime: Long): List<FunnelQueryDto> {
+    override fun getFunnelQueryById(funnel: Funnel, completionTime: Long, startTimestamp: Long?, endTimestamp: Long?): List<FunnelQueryDto> {
         val statement = dataSource.connection.createStatement()
-        val queryString = funnel.toQueryString(completionTime)
+        val queryString = funnel.toQueryString(completionTime, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
         val result = arrayListOf<FunnelQueryDto>()
         while (resultSet.next()) {
@@ -26,9 +26,9 @@ class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) 
         return result
     }
 
-    override fun getFunnelSplitBy(funnel: Funnel, completionTime: Long, splitBy: String): List<FunnelQueryDto> {
+    override fun getFunnelSplitBy(funnel: Funnel, completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?): List<FunnelQueryDto> {
         val statement = dataSource.connection.createStatement()
-        val queryString = funnel.toQueryStringWithSplit(completionTime, splitBy)
+        val queryString = funnel.toQueryStringWithSplit(completionTime, splitBy, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
         val result = arrayListOf<FunnelQueryDto>()
         while (resultSet.next()) {
@@ -45,10 +45,10 @@ class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) 
 
 
     override fun getFunnelSegment(
-        funnel: Funnel, completionTime: Long, steps: List<Step>
+        funnel: Funnel, completionTime: Long, steps: List<Step>, startTimestamp: Long?, endTimestamp: Long?
     ): List<SegmentFunnelQueryDto> {
         val statement = dataSource.connection.createStatement()
-        val queryString = funnel.toSegmentQuery(completionTime, steps)
+        val queryString = funnel.toSegmentQuery(completionTime, steps, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
         val result = arrayListOf<SegmentFunnelQueryDto>()
         while (resultSet.next()) {

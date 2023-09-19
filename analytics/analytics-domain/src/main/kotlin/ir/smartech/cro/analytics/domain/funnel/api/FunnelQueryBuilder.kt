@@ -9,8 +9,16 @@ class FunnelQueryBuilder private constructor() {
         private var productNumber: String? = null
         private var completionTime: Long? = null
         private var splitBy: String? = null
+        private var startTimestamp: Long? = null
+        private var endTimestamp: Long? = null
 //        private var segmentFirstSteStep: String? = null
 //        private var segmentSecondSteStep: String? = null
+
+        fun setTimeFrame(startTimestamp: Long?, endTimestamp: Long?): Companion {
+            this.startTimestamp = startTimestamp
+            this.endTimestamp = endTimestamp
+            return this
+        }
 
         fun steps(dto: List<StepQueryDto>): Companion {
             if (steps == null) steps = dto
@@ -46,6 +54,8 @@ class FunnelQueryBuilder private constructor() {
                                 windowFunnel($completionTime, 'strict_order')(timestamp, ${getSteps()}) AS level
                          from analytics.intrack_events
                          where product_id = '$productNumber'
+                         ${getTimeFrame()}
+
                          group by user_id ${splitBy?.let { ", $it" } ?: ""}
                          )
                 GROUP BY level ${splitBy?.let { ", $it" } ?: ""}
@@ -57,6 +67,9 @@ class FunnelQueryBuilder private constructor() {
             return result
         }
 
+        private fun getTimeFrame() = """${if(startTimestamp != null) "AND $startTimestamp <= timestamp" else ""}
+            | ${if(endTimestamp != null) "AND $endTimestamp >= timestamp" else ""}""".trimMargin()
+
         private fun getSteps() = steps?.sortedBy { it?.stepNumber }?.map { it?.getStepQuery() }?.joinToString(",")
 
         fun resetFields() {
@@ -64,6 +77,8 @@ class FunnelQueryBuilder private constructor() {
             productNumber = null
             completionTime = null
             splitBy = null
+            startTimestamp = null
+            endTimestamp = null
         }
     }
 }

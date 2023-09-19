@@ -28,19 +28,20 @@ open class Funnel : BaseEntity() {
  * this method uses the [FunnelQueryBuilder] for creating FunnelQuery (sql query) from [Funnel] params
  * its normal funnel
  */
-fun Funnel.toQueryString(completionTime: Long) = run {
+fun Funnel.toQueryString(completionTime: Long, startTimestamp: Long?, endTimestamp: Long?) = run {
     val funnelSteps = getStepQueryDto()
     FunnelQueryBuilder
         .steps(funnelSteps)
         .productNumber(productNumber!!)
         .completionTime(completionTime)
+        .setTimeFrame(startTimestamp, endTimestamp)
         .build()
 }
 
 /**
  * this method does something like Funnel.toQueryString() and the different is in splitBy input (set groupBy on data)
  */
-fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String) = run {
+fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTimestamp: Long?, endTimestamp: Long?) = run {
     val funnelSteps = getStepQueryDto()
     FunnelQueryBuilder
         .steps(funnelSteps)
@@ -53,7 +54,7 @@ fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String) = run {
 /**
  * this method create segmentQuery, it's the dropped users between firstStep and secondStep
  */
-fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step>) = run {
+fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step>, startTimestamp: Long?, endTimestamp: Long?) = run {
     val funnelSteps = getStepQueryDto(steps)
     FunnelQueryBuilder
         .steps(funnelSteps)
