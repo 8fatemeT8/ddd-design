@@ -174,5 +174,5 @@ Client-id: 2
   "completionTime": 100,
   "startDate": "",
   "endDate": "",
-  "stepNumbers": [1,2]
+  "stepNumbers": 1
 }

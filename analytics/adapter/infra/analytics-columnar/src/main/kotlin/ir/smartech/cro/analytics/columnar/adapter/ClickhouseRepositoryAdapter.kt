@@ -49,10 +49,10 @@ class ClickhouseRepositoryAdapter(private val dataSource: ClickHouseDataSource) 
 
 
     override fun getFunnelSegment(
-        funnel: Funnel, completionTime: Long, steps: List<Step?>, startTimestamp: Long?, endTimestamp: Long?
+        funnel: Funnel, completionTime: Long, dropped: Int, startTimestamp: Long?, endTimestamp: Long?
     ): SegmentFunnelQueryDto {
         val statement = dataSource.connection.createStatement()
-        val queryString = funnel.toSegmentQuery(completionTime, steps, startTimestamp, endTimestamp)
+        val queryString = funnel.toSegmentQuery(completionTime, dropped, startTimestamp, endTimestamp)
         val resultSet = statement.executeQuery(queryString)
         val result = SegmentFunnelQueryDto().apply {
             while (resultSet.next()) {

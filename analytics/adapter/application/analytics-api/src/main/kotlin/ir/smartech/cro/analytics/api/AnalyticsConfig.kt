@@ -6,6 +6,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import org.springframework.web.client.RestTemplate
 import javax.sql.DataSource
 
 
@@ -33,4 +34,7 @@ class AnalyticsConfig {
             .password(password)
             .driverClassName(driverName).build()
     }
+
+    @Bean
+    fun restTemplate(): RestTemplate = RestTemplate()
 }

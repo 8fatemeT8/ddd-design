@@ -56,31 +56,19 @@ fun Funnel.toQueryStringWithSplit(completionTime: Long, splitBy: String, startTi
 /**
  * this method create segmentQuery, it's the dropped users between firstStep and secondStep
  */
-fun Funnel.toSegmentQuery(completionTime: Long, steps: List<Step?>, startTimestamp: Long?, endTimestamp: Long?) = run {
-    val funnelSteps = getStepQueryDto(steps)
+fun Funnel.toSegmentQuery(completionTime: Long, droppedStep: Int, startTimestamp: Long?, endTimestamp: Long?) = run {
+    val funnelSteps = getStepQueryDto()
     FunnelQueryBuilder
         .steps(funnelSteps, true)
         .productNumber(productNumber!!)
         .completionTime(completionTime)
         .setTimeFrame(startTimestamp, endTimestamp)
+        .dropped(droppedStep)
         .build()
 }
 
-private fun Funnel.getStepQueryDto(input: List<Step?>? = null) =
-    input?.sortedBy { it?.stepNumber }?.map {
-        StepQueryDto().apply {
-            stepNumber = it?.stepNumber
-            eventName = it?.eventName
-            conditions = it?.stepConditions?.map { it2 ->
-                it2.operator?.parser(it2.value)?.apply {
-                    eventProperty = it2.eventProperty
-                    operator = it2.operator
-                    eventPropertyType = it2.eventPropertyType
-                    negate = it2.negate
-                }
-            }
-        }
-    } ?: steps.sortedBy { it?.stepNumber }.map {
+private fun Funnel.getStepQueryDto() =
+    steps.sortedBy { it?.stepNumber }.map {
         StepQueryDto().apply {
             stepNumber = it?.stepNumber
             eventName = it?.eventName

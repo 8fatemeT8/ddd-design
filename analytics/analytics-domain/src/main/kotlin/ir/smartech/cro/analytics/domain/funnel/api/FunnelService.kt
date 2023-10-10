@@ -91,11 +91,13 @@ class FunnelService(
     }
 
     fun getFunnelQuerySegment(
-        id: Int, clientId: Int, completionTime: Long, stepNumbers: List<Long>, startDate: Date?, endDate: Date?
+        id: Int, clientId: Int, completionTime: Long, dropped: Long?, startDate: Date?, endDate: Date?
     ): SegmentFunnelQueryDto {
-        val funnel = findByIdAndClientId(id, clientId)
-        val steps = funnel!!.steps.filter { stepNumbers.contains(it?.stepNumber) }.sortedBy { it?.stepNumber }
-        if (steps.isEmpty()) throw ResponseException(ErrorCodes.NOT_FOUND, "steps not found")
-        return clickhouseRepository.getFunnelSegment(funnel, completionTime, steps, startDate?.time, endDate?.time)
+        val funnel =
+            findByIdAndClientId(id, clientId) ?: throw ResponseException(ErrorCodes.NOT_FOUND, "funnel not found")
+        if (dropped == null) throw ResponseException(ErrorCodes.NOT_FOUND, "steps not found")
+        return clickhouseRepository.getFunnelSegment(
+            funnel, completionTime, dropped.toInt(), startDate?.time, endDate?.time
+        )
     }
 }

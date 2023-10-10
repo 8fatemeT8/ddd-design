@@ -12,10 +12,16 @@ class FunnelQueryBuilder private constructor() {
         private var startTimestamp: Long? = null
         private var endTimestamp: Long? = null
         private var segment: Boolean = false
+        private var dropped: Int? = null
 
         fun setTimeFrame(startTimestamp: Long?, endTimestamp: Long?): Companion {
             this.startTimestamp = startTimestamp
             this.endTimestamp = endTimestamp
+            return this
+        }
+
+        fun dropped(droppedStep: Int): Companion {
+            dropped = droppedStep
             return this
         }
 
@@ -52,7 +58,7 @@ class FunnelQueryBuilder private constructor() {
 
                          group by user_id ${splitBy?.let { ", $it" } ?: ""}
                          )
-                ${if (segment) "where level = 1" else "GROUP BY level ${splitBy?.let { ", $it" } ?: ""}"}
+                ${if (segment) "where level = $dropped" else "GROUP BY level ${splitBy?.let { ", $it" } ?: ""}"}
                 ORDER BY level ASC;
             """.trimIndent()
 

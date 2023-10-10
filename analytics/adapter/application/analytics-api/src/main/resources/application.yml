@@ -24,3 +24,8 @@ spring:
 
 server:
   port: 8080
+
+intrack:
+  url: http://localhost:8081/api/web/insight/productSegment/create
+  token : YWxpcmV6YUB1c2VybW9zdC5jb206YWxpcmV6YUB1c2VybW9zdC5jb20=
+

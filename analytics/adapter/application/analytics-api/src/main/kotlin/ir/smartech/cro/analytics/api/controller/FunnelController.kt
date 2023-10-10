@@ -2,6 +2,7 @@ package ir.smartech.cro.analytics.api.controller
 
 import ir.smartech.cro.analytics.api.dto.funnel.*
 import ir.smartech.cro.analytics.api.mapper.ApiFunnelMapper
+import ir.smartech.cro.analytics.api.utils.IntrackService
 import ir.smartech.cro.analytics.domain.common.api.utils.ErrorCodes
 import ir.smartech.cro.analytics.domain.common.api.utils.ResponseException
 import ir.smartech.cro.analytics.domain.funnel.api.FunnelService
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.*
 class FunnelController(
     private val funnelService: FunnelService,
     private val apiFunnelMapper: ApiFunnelMapper,
-    private val clientService: ClientService
+    private val clientService: ClientService,
+    private val intrackService: IntrackService
 ) :
     BaseController<Funnel, FunnelCreateDto, FunnelEditDto, FunnelViewDto, FunnelListDto, ApiFunnelMapper, FunnelService>(
         apiFunnelMapper,
@@ -106,6 +108,13 @@ class FunnelController(
         val response = funnelService.getFunnelQuerySegment(
             id!!, clientId, dto.completionTime!!, dto.stepNumbers!!, dto.startDate, dto.endDate
         )
-        return ResponseEntity.ok(response)
+        if (response.userIds.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("dropped user not found")
+        val funnel = funnelService.findById(id)
+        return ResponseEntity.ok(
+                intrackService.createSegment(
+                    response, "cro-segment-funnel-${funnel?.name}-$id", funnel!!.productNumber
+                )
+        )
     }
 }

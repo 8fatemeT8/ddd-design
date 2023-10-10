@@ -7,5 +7,5 @@ data class FunnelQueryRequest(
     var startDate: Date? = null,
     var endDate: Date? = null,
     var splitBy: String? = null,
-    var stepNumbers: List<Long>? = null
+    var stepNumbers: Long? = null
 )
