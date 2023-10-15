@@ -139,7 +139,7 @@ Client-id: 2
 ###
 
 #Query By Id
-GET http://localhost:8082/api/web/analytics/funnel/13/query
+POST http://localhost:8082/api/web/analytics/funnel/13/query
 Content-Type: application/json
 Client-id: 2
 
@@ -152,7 +152,7 @@ Client-id: 2
 ###
 
 #SplitBy Query
-GET http://localhost:8082/api/web/analytics/funnel/13/query-split
+POST http://localhost:8082/api/web/analytics/funnel/13/query-split
 Content-Type: application/json
 Client-id: 2
 
@@ -166,7 +166,7 @@ Client-id: 2
 ###
 
 #Segment Query
-GET http://localhost:8082/api/web/analytics/funnel/13/query-segment
+POST http://localhost:8082/api/web/analytics/funnel/13/query-segment
 Content-Type: application/json
 Client-id: 2
 

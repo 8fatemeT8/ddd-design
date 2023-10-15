@@ -46,8 +46,8 @@ data class StepConditionSimpleQueryDto(var value: String? = null) : StepConditio
 data class StepConditionOneOfQueryDto(var values: List<String>? = null) : StepConditionQueryBaseDto() {
     fun getCondition() =
         if (negate!!)
-            "in($eventProperty,[${values?.joinToString(",") { "'$it'" }}])"
-        else "notIn($eventProperty,[${values?.joinToString(",") { "'$it'" }}])"
+            "notIn($eventProperty,[${values?.joinToString(",") { "'$it'" }}])"
+        else "in($eventProperty,[${values?.joinToString(",") { "'$it'" }}])"
 }
 
 

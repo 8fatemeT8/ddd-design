@@ -1,11 +1,11 @@
 package ir.smartech.cro.analytics.columnar
 
-import cc.blynk.clickhouse.ClickHouseDataSource
-import cc.blynk.clickhouse.settings.ClickHouseProperties
+import com.clickhouse.jdbc.ClickHouseDataSource
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import java.util.Properties
 
 
 @ComponentScan(basePackageClasses = [ClickhouseConfig::class])
@@ -23,9 +23,9 @@ class ClickhouseConfig {
 
     @Bean
     fun datasource(): ClickHouseDataSource {
-        val properties = ClickHouseProperties()
-        properties.password = password
-        properties.user = username
+        val properties = Properties()
+        properties.setProperty("password",password)
+        properties.setProperty("user",username)
         return ClickHouseDataSource(dataSourceUrl, properties)
     }
 }

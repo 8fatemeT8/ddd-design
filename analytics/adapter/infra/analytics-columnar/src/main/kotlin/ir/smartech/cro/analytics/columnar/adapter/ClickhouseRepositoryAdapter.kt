@@ -1,6 +1,6 @@
 package ir.smartech.cro.analytics.columnar.adapter
 
-import cc.blynk.clickhouse.ClickHouseDataSource
+import com.clickhouse.jdbc.ClickHouseDataSource
 import ir.smartech.cro.analytics.domain.funnel.api.dto.FunnelQueryDto
 import ir.smartech.cro.analytics.domain.funnel.api.dto.SegmentFunnelQueryDto
 import ir.smartech.cro.analytics.domain.funnel.api.entity.*

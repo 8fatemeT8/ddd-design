@@ -63,7 +63,7 @@ class FunnelController(
     /**
      * returns normal funnel query
      */
-    @GetMapping("/{id}/query")
+    @PostMapping("/{id}/query")
     fun query(
         @PathVariable("id") id: Int?,
         @RequestHeader("Client-id") clientId: Int,
@@ -79,7 +79,7 @@ class FunnelController(
     /**
      * returns funnel query with split by input value
      */
-    @GetMapping("/{id}/query-split")
+    @PostMapping("/{id}/query-split")
     fun splitByQuery(
         @PathVariable("id") id: Int?,
         @RequestHeader("Client-id") clientId: Int,
@@ -97,7 +97,7 @@ class FunnelController(
     /**
      * returns list of userId who dropped from firstStep and secondStep
      */
-    @GetMapping("/{id}/query-segment")
+    @PostMapping("/{id}/query-segment")
     fun segmentQuery(
         @PathVariable("id") id: Int?,
         @RequestHeader("Client-id") clientId: Int,

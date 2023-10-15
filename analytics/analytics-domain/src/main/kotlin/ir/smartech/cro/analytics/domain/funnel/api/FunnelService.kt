@@ -87,7 +87,7 @@ class FunnelService(
                     it.key
                 )
             }
-        }.flatten().sortedBy { it.stepNumber }
+        }.flatten().filterNot { it.stepNumber == 0L }.sortedBy { it.stepNumber }
     }
 
     fun getFunnelQuerySegment(

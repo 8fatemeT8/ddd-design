@@ -1,97 +1,104 @@
 package ir.smartech.cro.analytics.api.funnel
 
 import BaseMockMVCTest
-import com.fasterxml.jackson.databind.ObjectMapper
-import ir.smartech.cro.analytics.api.dto.funnel.FunnelViewDto
+import ir.smartech.cro.analytics.api.dto.ClientCreateDto
+import ir.smartech.cro.analytics.api.dto.funnel.*
+import ir.smartech.cro.analytics.domain.common.api.enums.Operator
+import ir.smartech.cro.analytics.domain.common.api.enums.PropertyType
+import ir.smartech.cro.analytics.rdb.entity.JpaClient
 import ir.smartech.cro.analytics.rdb.repository.JpaFunnelRepository
 import ir.smartech.cro.analytics.rdb.repository.JpaClientRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class FunnelTest(
     @Autowired
     private val repo: JpaFunnelRepository,
     @Autowired
-    private val clientRepository: JpaClientRepository,
-    @Autowired
-    private val objectMapper: ObjectMapper
+    private val clientRepository: JpaClientRepository
 ) : BaseMockMVCTest() {
 
     @BeforeEach
-    fun clearDb() {
+    fun setup() {
         repo.deleteAll()
         clientRepository.deleteAll()
     }
 
-    @Test
-    fun `create funnel`() {
-        var json = """
-            {
-              "name": "Intrack",
-              "description" : "test test",
-              "enabled": true
-            }
-        """.trimIndent()
+    @AfterEach
+    fun cleanup() {
+    }
 
+    private fun initialClient(inputName: String? = "Intrack"): JpaClient? {
+        val dto = ClientCreateDto().apply {
+            name = inputName
+            description = "test test"
+            enabled = true
+        }
 
-        mockMvc.sendPost("/api/web/analytics/client", json)
+        mockMvc.sendPost("/api/web/analytics/client", dto)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        val client = clientRepository.findAll().first()
+        return clientRepository.findAll().find { it.name == dto.name }
+    }
 
-        json = """
-            {
-              "productNumber": 2,
-              "name": "first cro funnel",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
+    @Test
+    fun `create funnel`() {
+        val client = initialClient()
+
+        val funnelDto = FunnelCreateDto().apply {
+            productNumber = 2
+            name = "first cro funnel"
+            steps = arrayListOf(
+                StepCreateDto().apply {
+                    eventName = "login"
+                    stepNumber = 1
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "122223"
+                            negate = true
+                            operator = Operator.EQUAL
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "12223,4"
+                            negate = true
+                            operator = Operator.NOT_BETWEEN
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "1223"
+                            negate = true
+                            operator = Operator.ENDS_WITH
+                        }
+                    )
                 },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
+                StepCreateDto().apply {
+                    eventName = "logout"
+                    stepNumber = 2
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "123"
+                            negate = false
+                            operator = Operator.GREATER_THAN_OR_EQUAL
+                        }
+                    )
                 }
-              ]
-            }
-        """.trimIndent()
+            )
+        }
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("first cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -99,8 +106,8 @@ class FunnelTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("login"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("logout"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions.size()").value(1))
             .andReturn()
@@ -109,74 +116,58 @@ class FunnelTest(
         assert(result.size == 1)
     }
 
-
     @Test
     fun `create and update`() {
-        var json = """
-            {
-              "name": "Intrack",
-              "description" : "test test",
-              "enabled": true
-            }
-        """.trimIndent()
+        val client = initialClient()
 
-
-        mockMvc.sendPost("/api/web/analytics/client", json)
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val client = clientRepository.findAll().first()
-
-        json = """
-            {
-              "productNumber": 2,
-              "name": "second cro funnel",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
+        val funnelDto = FunnelCreateDto().apply {
+            productNumber = 2
+            name = "second cro funnel"
+            steps = arrayListOf(
+                StepCreateDto().apply {
+                    eventName = "login"
+                    stepNumber = 1
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "122223"
+                            negate = true
+                            operator = Operator.EQUAL
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "12223,4"
+                            negate = true
+                            operator = Operator.NOT_BETWEEN
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "1223"
+                            negate = true
+                            operator = Operator.ENDS_WITH
+                        }
+                    )
                 },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
+                StepCreateDto().apply {
+                    eventName = "logout"
+                    stepNumber = 2
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "123"
+                            negate = false
+                            operator = Operator.GREATER_THAN_OR_EQUAL
+                        }
+                    )
                 }
-              ]
-            }
-        """.trimIndent()
+            )
+        }
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(2))
@@ -185,8 +176,8 @@ class FunnelTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("login"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("logout"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions.size()").value(1))
             .andReturn()
@@ -194,57 +185,56 @@ class FunnelTest(
         var result = repo.findAll().toList()
         assert(result.size == 1)
 
-        json = """
-            {
-              "id":${result[0].id},
-              "productNumber": 6,
-              "name": "update ${result[0].name}",
-              "steps": [
-                {
-                  "eventName": "update login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhhwww",
-                      "eventPropertyType": "NUMBER",
-                      "value": "1222234444",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhhttt",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4666",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhhuuuu",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223888",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "updated logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhhccc",
-                      "eventPropertyType": "TEXT",
-                      "value": "12345",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
 
-        mockMvc.sendPut("/api/web/analytics/funnel", json, client.id!!)
+        val funnelUpdateDto = FunnelEditDto().apply {
+            id = result[0].id
+            productNumber = 6
+            name = "update ${result[0].name}"
+            steps = arrayListOf(
+                StepViewDto().apply {
+                    eventName = "update login"
+                    stepNumber = 1
+                    stepConditions = arrayListOf(
+                        ConditionViewDto().apply {
+                            eventProperty = "hhhwww"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "1222234444"
+                            negate = true
+                            operator = Operator.EQUAL
+                        },
+                        ConditionViewDto().apply {
+                            eventProperty = "hhhttt"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "12223,4666"
+                            negate = true
+                            operator = Operator.NOT_BETWEEN
+                        },
+                        ConditionViewDto().apply {
+                            eventProperty = "hhhuuuu"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "1223888"
+                            negate = true
+                            operator = Operator.ENDS_WITH
+                        }
+                    )
+                },
+                StepViewDto().apply {
+                    eventName = "updated logout"
+                    stepNumber = 2
+                    stepConditions = arrayListOf(
+                        ConditionViewDto().apply {
+                            eventProperty = "hhhccc"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "12345"
+                            negate = false
+                            operator = Operator.GREATER_THAN_OR_EQUAL
+                        }
+                    )
+                }
+            )
+        }
+
+        mockMvc.sendPut("/api/web/analytics/funnel", funnelUpdateDto, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("update ${result[0].name}"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.productNumber").value(6))
@@ -253,8 +243,8 @@ class FunnelTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("update login"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("updated logout"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[0].eventProperty").value("hhhwww"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions[0].value").value("1222234444"))
@@ -273,71 +263,57 @@ class FunnelTest(
 
     @Test
     fun `create and get one funnel`() {
-        var json = """
-            {
-              "name": "Intrack",
-              "description" : "test",
-              "enabled": true
-            }
-        """.trimIndent()
+        val client = initialClient()
 
-
-        mockMvc.sendPost("/api/web/analytics/client", json)
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        val client = clientRepository.findAll().first()
-
-        json = """
-            {
-              "productNumber": 2,
-              "name": "second cro funnel",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
+        val funnelDto = FunnelCreateDto().apply {
+            productNumber = 2
+            name = "second cro funnel"
+            steps = arrayListOf(
+                StepCreateDto().apply {
+                    eventName = "login"
+                    stepNumber = 1
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "122223"
+                            negate = true
+                            operator = Operator.EQUAL
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "12223,4"
+                            negate = true
+                            operator = Operator.NOT_BETWEEN
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "1223"
+                            negate = true
+                            operator = Operator.ENDS_WITH
+                        }
+                    )
                 },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
+                StepCreateDto().apply {
+                    eventName = "logout"
+                    stepNumber = 2
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "123"
+                            negate = false
+                            operator = Operator.GREATER_THAN_OR_EQUAL
+                        }
+                    )
                 }
-              ]
-            }
-        """.trimIndent()
+            )
+        }
 
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("second cro funnel"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -345,8 +321,8 @@ class FunnelTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps.size()").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].eventName").value("login"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].eventName").value("logout"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(0))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepNumber").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepNumber").value(2))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[0].stepConditions.size()").value(3))
             .andExpect(MockMvcResultMatchers.jsonPath("$.steps[1].stepConditions.size()").value(1))
             .andReturn()
@@ -366,243 +342,82 @@ class FunnelTest(
         entity.steps?.sortedBy { it.stepNumber }
         assert(entity.steps?.get(0)?.eventName == "login")
         assert(entity.steps?.get(1)?.eventName == "logout")
-        assert(entity.steps?.get(0)?.stepNumber == 0)
-        assert(entity.steps?.get(1)?.stepNumber == 1)
+        assert(entity.steps?.get(0)?.stepNumber == 1)
+        assert(entity.steps?.get(1)?.stepNumber == 2)
         assert(entity.steps?.get(0)?.stepConditions?.size == 3)
         assert(entity.steps?.get(1)?.stepConditions?.size == 1)
 
     }
 
-
     @Test
     fun `create and getAll and getAllByContains funnel`() {
-        var json = """
-            {
-              "name": "Intrack",
-              "description" : "test",
-              "enabled": true
-            }
-        """.trimIndent()
+        var client = initialClient()
 
-
-        mockMvc.sendPost("/api/web/analytics/client", json)
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        var client = clientRepository.findAll().first()
-
-        json = """
-            {
-              "productNumber": 2,
-              "name": "funnel 1",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
+        val funnelDto = FunnelCreateDto().apply {
+            productNumber = 2
+            name = "funnel 1"
+            steps = arrayListOf(
+                StepCreateDto().apply {
+                    eventName = "login"
+                    stepNumber = 1
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "122223"
+                            negate = true
+                            operator = Operator.EQUAL
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.NUMBER
+                            value = "12223,4"
+                            negate = true
+                            operator = Operator.NOT_BETWEEN
+                        },
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "1223"
+                            negate = true
+                            operator = Operator.ENDS_WITH
+                        }
+                    )
                 },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
+                StepCreateDto().apply {
+                    eventName = "logout"
+                    stepNumber = 2
+                    stepConditions = arrayListOf(
+                        ConditionCreateDto().apply {
+                            eventProperty = "hhh"
+                            eventPropertyType = PropertyType.TEXT
+                            value = "123"
+                            negate = false
+                            operator = Operator.GREATER_THAN_OR_EQUAL
+                        }
+                    )
                 }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+            )
+        }
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
         val result = repo.findAll().toList()
         assert(result.size == 1)
 
-        json = """
-            {
-              "productNumber": 2,
-              "name": "funnel 1 2",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        funnelDto.name = "funnel 1 2"
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        json = """
-            {
-              "productNumber": 2,
-              "name": "funnel 2 3",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        funnelDto.name = "funnel 2 3"
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        json = """
-            {
-              "productNumber": 2,
-              "name": "funnel 2 4",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        funnelDto.name = "funnel 2 4"
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
@@ -628,144 +443,35 @@ class FunnelTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
 
-        json = """
-            {
-              "name": "Intrack2",
-              "description" : "test",
-              "enabled": true
-            }
-        """.trimIndent()
+        client = initialClient("Intrack2")
 
-
-        mockMvc.sendPost("/api/web/analytics/client", json)
+        funnelDto.name = "second cro funnel"
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        client = clientRepository.findAll().first { it.name == "Intrack2" }
-
-        json = """
-            {
-              "productNumber": 2,
-              "name": "second cro funnel",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
+        funnelDto.name = "third cro funnel"
+        mockMvc.sendPost("/api/web/analytics/funnel", funnelDto, client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        json = """
-            {
-              "productNumber": 2,
-              "name": "third cro funnel",
-              "steps": [
-                {
-                  "eventName": "login",
-                  "stepNumber": 0,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "122223",
-                      "negate": "true",
-                      "operator": "EQUAL"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "NUMBER",
-                      "value": "12223,4",
-                      "negate": "true",
-                      "operator": "NOT_BETWEEN"
-                    },
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "1223",
-                      "negate": "true",
-                      "operator": "ENDS_WITH"
-                    }
-                  ]
-                },
-                {
-                  "eventName": "logout",
-                  "stepNumber": 1,
-                  "stepConditions": [
-                    {
-                      "eventProperty": "hhh",
-                      "eventPropertyType": "TEXT",
-                      "value": "123",
-                      "negate": "false",
-                      "operator": "GREATER_THAN_OR_EQUAL"
-                    }
-                  ]
-                }
-              ]
-            }
-        """.trimIndent()
-
-        mockMvc.sendPost("/api/web/analytics/funnel", json, client.id!!)
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-        mockMvc.sendGet("/api/web/analytics/funnel", client.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel", client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
             .andReturn()
 
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/second?page=0&size=10", client.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/second?page=0&size=10", client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/third?page=0&size=10", client.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/third?page=0&size=10", client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(1))
             .andReturn()
 
-        mockMvc.sendGet("/api/web/analytics/funnel/contains/fun?page=0&size=10", client.id!!)
+        mockMvc.sendGet("/api/web/analytics/funnel/contains/fun?page=0&size=10", client?.id!!)
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()").value(2))
             .andReturn()

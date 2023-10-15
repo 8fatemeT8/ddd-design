@@ -1,6 +1,7 @@
 package ir.smartech.cro.analytics.api.utils
 
 import ir.smartech.cro.analytics.domain.funnel.api.dto.SegmentFunnelQueryDto
+import jakarta.servlet.ServletException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -23,9 +24,14 @@ class IntrackService(
         val header = initialHeaders(productId)
         val requestDto = initialBodyDto(name, dto)
         val body = HttpEntity(requestDto, header)
-        val response = restTemplate.postForEntity(url!!, body, HashMap::class.java)
-        val responseDto = response.body?.get("result") as LinkedHashMap<String, Int>
-        return IdDto(responseDto["id"]?.toLong())
+        try {
+            val response = restTemplate.postForEntity(url!!, body, HashMap::class.java)
+            val responseDto = response.body?.get("result") as LinkedHashMap<String, Int>
+            return IdDto(responseDto["id"]?.toLong())
+        }catch (e:Exception){
+            println(e)
+        }
+        return IdDto()
     }
 
     private fun initialHeaders(productId: String?): HttpHeaders {

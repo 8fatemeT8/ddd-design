@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper
 import ir.smartech.cro.analytics.adapter.compositionroot.CompositionConfig
 import ir.smartech.cro.analytics.api.AnalyticsApplication
 import org.junit.jupiter.api.BeforeEach
@@ -21,17 +22,20 @@ class BaseMockMVCTest {
     @Autowired
     lateinit var applicationContext: WebApplicationContext
 
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
+
     @BeforeEach
     fun beforeEach() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
             .build()
     }
 
-    fun MockMvc.sendPost(url: String, body: String, clientId: Int? = null): ResultActions {
+    fun MockMvc.sendPost(url: String, body: Any, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.post(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
+                .content(objectMapper.writeValueAsBytes(body))
                 .header("Client-id", clientId ?: "1")
         )
     }
@@ -52,11 +56,11 @@ class BaseMockMVCTest {
         )
     }
 
-    fun MockMvc.sendPut(url: String, body: String, clientId: Int? = null): ResultActions {
+    fun MockMvc.sendPut(url: String, body: Any, clientId: Int? = null): ResultActions {
         return this.perform(
             MockMvcRequestBuilders.put(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body)
+                .content(objectMapper.writeValueAsBytes(body))
                 .header("Client-id", clientId ?: "1")
         )
     }

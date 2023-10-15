@@ -12,12 +12,10 @@ spring:
     url: jdbc:clickhouse://cro-stage-1:8123
     username: crouser
     password: crostage
-    driver-class-name: cc.blynk.clickhouse.ClickHouseDriver
   jpa:
     database: default
     hibernate:
       ddl-auto: update # TODO: add liquibase for database migrations
-    defer-datasource-initialization: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

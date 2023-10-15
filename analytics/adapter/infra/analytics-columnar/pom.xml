@@ -44,9 +44,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>cc.blynk.clickhouse</groupId>
-            <artifactId>clickhouse4j</artifactId>
-            <version>1.4.4</version>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.4.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

@@ -68,7 +68,7 @@ class FunnelQueryBuilder private constructor() {
         }
 
         private fun getTimeFrame() = """${if (startTimestamp != null) "AND $startTimestamp <= timestamp" else ""}
-            | ${if (endTimestamp != null) "AND $endTimestamp >= timestamp" else ""}""".trimMargin()
+             ${if (endTimestamp != null) "AND $endTimestamp >= timestamp" else ""}""".trimMargin()
 
         private fun getSteps() = steps?.sortedBy { it?.stepNumber }?.map { it?.getStepQuery() }?.joinToString(",")
 
