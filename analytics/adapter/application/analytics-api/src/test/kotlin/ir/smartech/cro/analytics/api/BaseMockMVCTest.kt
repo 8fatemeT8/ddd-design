@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import ir.smartech.cro.analytics.adapter.compositionroot.CompositionConfig
 import ir.smartech.cro.analytics.api.AnalyticsApplication
+import ir.smartech.cro.analytics.api.config.ContainerTest
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
+@ContainerTest
 @Import(CompositionConfig::class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = [AnalyticsApplication::class], webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)

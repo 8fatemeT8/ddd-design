@@ -11,9 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EntityScan(basePackageClasses = [BaseEntity::class])
 @EnableJpaRepositories(basePackageClasses = [JpaFunnelRepository::class])
-@ComponentScan(basePackageClasses = [PostgresConfig::class])
+@ComponentScan(basePackageClasses = [RdbConfig::class])
 @Configuration
-class PostgresConfig{
+class RdbConfig{
     @Bean
     fun modelMapper(): ModelMapper = ModelMapper()
 }

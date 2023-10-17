@@ -4,6 +4,7 @@ spring:
   datasource:
     password: sample_user
     username: sample_password
+    driver-class-name: org.postgresql.Driver
   secondDatasource:
     username: sample_user
     password: sample_password
