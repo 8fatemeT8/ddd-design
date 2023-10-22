@@ -18,7 +18,7 @@ class IntrackService(
     @Value("\${intrack.token}")
     var token: String? = null
 
-    @Value("\${intrack.  attribute-id}")
+    @Value("\${intrack.attribute-id}")
     var attributeId: Int? = null
 
 
