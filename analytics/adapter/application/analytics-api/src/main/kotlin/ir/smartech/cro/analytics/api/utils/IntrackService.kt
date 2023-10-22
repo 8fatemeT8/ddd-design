@@ -1,7 +1,6 @@
 package ir.smartech.cro.analytics.api.utils
 
 import ir.smartech.cro.analytics.domain.funnel.api.dto.SegmentFunnelQueryDto
-import jakarta.servlet.ServletException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -19,6 +18,9 @@ class IntrackService(
     @Value("\${intrack.token}")
     var token: String? = null
 
+    @Value("\${intrack.  attribute-id}")
+    var attributeId: Int? = null
+
 
     fun createSegment(dto: SegmentFunnelQueryDto, name: String, productId: String?): IdDto {
         val header = initialHeaders(productId)
@@ -28,7 +30,7 @@ class IntrackService(
             val response = restTemplate.postForEntity(url!!, body, HashMap::class.java)
             val responseDto = response.body?.get("result") as LinkedHashMap<String, Int>
             return IdDto(responseDto["id"]?.toLong())
-        }catch (e:Exception){
+        } catch (e: Exception) {
             println(e)
         }
         return IdDto()
@@ -46,5 +48,6 @@ class IntrackService(
         IntrackSegmentCreateDto().apply {
             this.name = name
             terms[0].predicates[0].stringValue = dto.userIds.joinToString(",")
+            terms[0].predicates[0].attribute = attributeId ?: 39
         }
 }

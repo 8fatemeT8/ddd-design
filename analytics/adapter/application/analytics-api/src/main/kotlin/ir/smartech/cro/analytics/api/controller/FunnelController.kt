@@ -62,6 +62,8 @@ class FunnelController(
 
     /**
      * returns normal funnel query
+     * @param id is the funnel identifier
+     * @body get completionTime and funnel timeFrame ([FunnelQueryRequest])
      */
     @PostMapping("/{id}/query")
     fun query(
@@ -78,6 +80,8 @@ class FunnelController(
 
     /**
      * returns funnel query with split by input value
+     * @param id is the funnel identifier
+     * @body get normal query data ([FunnelQueryRequest]) and splitBy column ( this means the final result will be grouped by the splitBy column )
      */
     @PostMapping("/{id}/query-split")
     fun splitByQuery(
@@ -96,6 +100,8 @@ class FunnelController(
 
     /**
      * returns list of userId who dropped from firstStep and secondStep
+     * @param id is the funnel identifier
+     * @body get normal query data ([FunnelQueryRequest]) and the stepNumber to return dropped users of this stepNumber
      */
     @PostMapping("/{id}/query-segment")
     fun segmentQuery(

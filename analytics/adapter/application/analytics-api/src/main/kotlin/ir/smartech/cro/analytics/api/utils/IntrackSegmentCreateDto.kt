@@ -16,7 +16,7 @@ data class IntrackTermDto(
 )
 
 data class IntrackPredicateDto(
-    val attribute: Int = 39,
+    var attribute: Int? = null,
     val negate: Boolean = false,
     val operator: Operator = Operator.ONE_OF,
     var stringValue: String? = null,
