@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: Analytics API
+  profiles:
+    active: dev,default
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cro_analytics
+    username: cro_analytics_username
+    password: cro_analytics_password
+    driver-class-name: org.postgresql.Driver
+  secondDatasource:
+    url: jdbc:clickhouse://cro-stage-1:8123
+    username: crouser
+    password: crostage
+  jpa:
+    database: default
+    hibernate:
+      ddl-auto: update # TODO: add liquibase for database migrations
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8080
+
+intrack:
+  url: http://localhost:8081/api/web/insight/productSegment/create
+  token : YWxpcmV6YUB1c2VybW9zdC5jb206YWxpcmV6YUB1c2VybW9zdC5jb20=
+  attribute-id: 39
+

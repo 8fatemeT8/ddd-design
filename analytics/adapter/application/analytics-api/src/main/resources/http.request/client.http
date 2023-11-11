@@ -1,0 +1,10 @@
+#Create
+POST http://localhost:8082/api/web/analytics/client
+Content-Type: application/json
+Client-id: 2
+
+{
+  "name": "Intrack",
+  "description" : "test test",
+  "enabled": true
+}

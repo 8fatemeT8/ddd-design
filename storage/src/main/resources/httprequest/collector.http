@@ -1,0 +1,15 @@
+POST http://localhost:8081/api/web/cro/collector/receive
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g
+
+{
+  "productId": "1111",
+  "product_id":"product65",
+  "user_id":"userkamand",
+  "timestamp":1677821600,
+  "event_name":"purchase"
+}
+
+###
+GET http://localhost:8081/api/web/cro/collector/return-type
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpbnRyYWNrXzMiLCJleHAiOjE2OTcxNDAyNjYsImlhdCI6MTY5NDI2MDI2Nn0.Mza45naCXagpVmGe6DqZ6Ntjkl1jSLRZfImaCj0Sl9WZOOA-3YTuJ77_a5XQ5OHVTjdvfexGSQoVF_gT0phg8g

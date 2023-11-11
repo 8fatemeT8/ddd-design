@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Analytics API
+  datasource:
+    password: sample_user
+    username: sample_password
+    driver-class-name: org.postgresql.Driver
+  secondDatasource:
+    username: sample_user
+    password: sample_password
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8082
+
+intrack:
+  url: http://localhost:8081/api/web/insight/productSegment/create
+  token : YWxpcmV6YUB1c2VybW9zdC5jb206YWxpcmV6YUB1c2VybW9zdC5jb20=
+  attribute-id: 39

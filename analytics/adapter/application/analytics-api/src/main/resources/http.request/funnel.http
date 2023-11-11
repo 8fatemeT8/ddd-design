@@ -1,0 +1,178 @@
+#Create
+POST http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+Client-id: 2
+
+{
+  "productNumber": 12,
+  "name": "first cro funnel",
+  "steps": [
+    {
+      "eventName": "search_pageview",
+      "stepNumber": 0,
+      "stepConditions": [
+        {
+          "eventProperty": "string96",
+          "eventPropertyType": "TEXT",
+          "value": "iOS",
+          "negate": "true",
+          "operator": "EQUAL"
+        }
+      ]
+    },
+    {
+      "eventName": "category_pageview",
+      "stepNumber": 1,
+      "stepConditions": [
+        {
+          "eventProperty": "string98",
+          "eventPropertyType": "TEXT",
+          "value": "Chrome",
+          "negate": "false",
+          "operator": "EQUAL"
+        }
+      ]
+    },
+    {
+      "eventName": "product_detail_pageview",
+      "stepNumber": 2,
+      "stepConditions": [
+        {
+          "eventProperty": "string100",
+          "eventPropertyType": "TEXT",
+          "value": "E9",
+          "negate": "false",
+          "operator": "CONTAINS"
+        }
+      ]
+    }
+  ]
+}
+
+
+###
+
+#Update
+PUT http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+Client-id: 2
+
+{
+  "id": 43,
+  "name": "3333 cro funnel",
+  "productNumber": 2,
+  "steps": [
+    {
+      "id": 117,
+      "eventName": "asdf",
+      "stepNumber": 0,
+      "stepConditions": [
+        {
+          "id": 202,
+          "operator": "EQUAL",
+          "value": "122223",
+          "negate": "true",
+          "eventProperty": "hhh",
+          "eventPropertyType": "TEXT"
+        },
+        {
+          "id": 203,
+          "operator": "NOT_BETWEEN",
+          "value": "12223,4",
+          "negate": "true",
+          "eventPropertyType": "TEXT",
+          "eventProperty": "hhh"
+        },
+        {
+          "id": 204,
+          "operator": "ENDS_WITH",
+          "value": "1223",
+          "negate": "true",
+          "eventPropertyType": "TEXT",
+          "eventProperty": "hhh"
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "eventName": "3333",
+      "stepNumber": 1,
+      "stepConditions": [
+        {
+          "id": 205,
+          "operator": "GREATER_THAN_OR_EQUAL",
+          "value": "123",
+          "negate": "true",
+          "eventPropertyType": "TEXT",
+          "eventProperty": "asdfsadf"
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+#Get By Id
+GET http://localhost:8082/api/web/analytics/funnel/2
+Content-Type: application/json
+Client-id: 2
+
+###
+
+#Get All
+GET http://localhost:8082/api/web/analytics/funnel
+Content-Type: application/json
+Client-id: 2
+
+###
+
+#Delte By Id
+DELETE http://localhost:8082/api/web/analytics/funnel/11
+Content-Type: application/json
+Client-id: 2
+
+###
+GET http://localhost:8082/api/web/analytics/funnel/contains/fun?page=0&size=10
+Client-id: 2
+
+###
+
+#Query By Id
+POST http://localhost:8082/api/web/analytics/funnel/13/query
+Content-Type: application/json
+Client-id: 2
+
+{
+  "completionTime": 1000000,
+  "startDate": "",
+  "endDate": ""
+}
+
+###
+
+#SplitBy Query
+POST http://localhost:8082/api/web/analytics/funnel/13/query-split
+Content-Type: application/json
+Client-id: 2
+
+{
+  "completionTime": 1000000,
+  "startDate": "",
+  "endDate": "",
+  "splitBy": "string96"
+}
+
+###
+
+#Segment Query
+POST http://localhost:8082/api/web/analytics/funnel/13/query-segment
+Content-Type: application/json
+Client-id: 2
+
+{
+  "completionTime": 100,
+  "startDate": "",
+  "endDate": "",
+  "stepNumbers": 1
+}
